@@ -15,12 +15,8 @@ public class GiayDAO {
         try {
             ResultSet rs = JDBCHelper.executeQuery(sql);
             while (rs.next()) {
-                String id = rs.getString("id");
-                String ma = rs.getString("ma_giay");
-                String name = rs.getString("name");
-                list.add(new Giay(id,ma, name));
+                list.add(new Giay(rs.getString("id"),rs.getString("ma_giay"),  rs.getString("name")));
             }
-
             return list;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -31,40 +27,44 @@ public class GiayDAO {
     }
 
     public Integer InsertGiay(Giay giay) {
-        String sql = "insert into Giay (ma_giay,name) values (?,?)";
+        String sql = "insert into Giay (id,ma_giay,name) values (newid(),?,?)";
         int row = JDBCHelper.excuteUpdate(sql, giay.getMa(), giay.getName());
         return row;
     }
 
     public Integer UpdateGiay(Giay giay) {
-        String sql = "update Giay set name=? where ma_giay = ?";
-        int row = JDBCHelper.excuteUpdate(sql, giay.getName(), giay.getMa());
+        String sql = "update Giay set ma_giay=?,name=? where id = ?";
+        int row = JDBCHelper.excuteUpdate(sql,giay.getMa(),giay.getName(), giay.getId());
         return row;
     }
 
-    public Integer DeleteGiay(String name) {
-        String sql = "DELETE FROM Giay WHERE ma_giay = ?";
-        int row = JDBCHelper.excuteUpdate(sql, name);
-        return row;
+//    public Integer DeleteGiay(String id) {
+//        String sql = "DELETE FROM Giay WHERE ma_giay = ?";
+//        int row = JDBCHelper.excuteUpdate(sql, id);
+//        return row;
+//    }
+
+//    public Giay SearchHang(String name) {
+//        String sql = "SELECT * FROM Giay WHERE ma_giay=?";
+//        ResultSet rs = JDBCHelper.executeQuery(sql, name);
+//
+//        if (rs != null) {
+//            try {
+//                if (rs.next()) {
+//                    return new Giay(rs.getString("ma_giay"), rs.getString("name"));
+//                }
+//                rs.close();
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        return null;
+//    }
+  public Giay selectById(String id) {
+        String sql = "SELECT * FROM Giay WHERE id=?";
+        ArrayList<Giay> list = getAll(sql, id);
+        return list.size() > 0 ? list.get(0) : null;
     }
-
-    public Giay SearchHang(String name) {
-        String sql = "SELECT * FROM Giay WHERE ma_giay=?";
-        ResultSet rs = JDBCHelper.executeQuery(sql, name);
-
-        if (rs != null) {
-            try {
-                if (rs.next()) {
-                    return new Giay(rs.getString("ma_giay"), rs.getString("name"));
-                }
-                rs.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
-    }
-
     public ArrayList<Giay> selectByKeyword(String keyword) { //tìm kiếm giay theo mã giày
         String sql = "SELECT * FROM Giay WHERE ma_giay LIKE ?";
         return this.getAll(sql, "%" + keyword + "%");
@@ -78,6 +78,7 @@ public class GiayDAO {
                 rs = JDBCHelper.executeQuery(sql, args);
                 while (rs.next()) {
                     Giay giay = new Giay();
+                    giay.setId(rs.getString("ID"));
                     giay.setMa(rs.getString("MA_GIAY"));
                     giay.setName(rs.getString("NAME"));
                     list.add(giay);
