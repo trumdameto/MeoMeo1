@@ -27,7 +27,7 @@ public class main extends javax.swing.JFrame implements CloseFrame{
 
     private MigLayout layout;
     private Menu menu;
-    private Header header;
+//    private Header header;
     private MainForm mainForm;
 
 
@@ -42,7 +42,7 @@ public class main extends javax.swing.JFrame implements CloseFrame{
         layout = new MigLayout("fill", "0[]0[100%, fill]0", "0[fill, top]0");
         jMain.setLayout(layout);
         menu = new Menu();
-        header = new Header();
+//        header = new Header();
         mainForm = new MainForm();
        
         menu.addEvent(new EventMenuSelected() {
@@ -69,7 +69,7 @@ public class main extends javax.swing.JFrame implements CloseFrame{
         });
         menu.initMenu();
         jMain.add(menu, "w 230!, spany2");
-        jMain.add(header, "h 50!, wrap");
+//        jMain.add(header, "h 50!, wrap");
         jMain.add(mainForm, "w 100%, h 100%");
       
     }
