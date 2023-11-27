@@ -24,6 +24,7 @@ import java.awt.Dimension;
 import java.awt.HeadlessException;
 import java.awt.image.BufferedImage;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -911,11 +912,6 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
                 btnSuDungDienMouseClicked(evt);
             }
         });
-        btnSuDungDien.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSuDungDienActionPerformed(evt);
-            }
-        });
 
         lblErrKiemTraDiem.setForeground(new java.awt.Color(204, 0, 0));
 
@@ -1185,24 +1181,27 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
                                         Integer soLuongGocGioHang = hdctrepo.selectSoLuongGioHangGoc(idHoaDonz, indexGiay.getiD());
                                         Integer soLuongGiHangThayDoi = soluongGioHang + soLuongGocGioHang;
                                         Integer idGiayCtTonTai = hdrepo.selectIdSanPhamTrongGioHang(indexGiay.getiD(), idHoaDonz);
+
                                         if (selectedRow >= 0) {
                                             if (idGiayCtTonTai == 0) {
                                                 if (hdctrepo.creatGiHang(indexGiay.getiD(), idHoaDonz, new BigDecimal(donGia), soluongGioHang) != null) {
                                                     updateProductQuantity(indexDanhSachSp, soluongGioHang);
                                                     showDataSanPham();
                                                     showDataGoHang(idHoaDonz);
-                                                    JOptionPane.showMessageDialog(this, "Bỏ Thành Công Vào Giỏ");
+//                                                    JOptionPane.showMessageDialog(this, "Đã thêm sản phẩm vào giỏ");
                                                 }
                                             } else {
                                                 if (hdctrepo.updateSoLuong(soLuongGiHangThayDoi, indexGiay.getiD()) != null) {
-                                                    updateProductQuantity(indexDanhSachSp, soluongGioHang);// trừ số lượng ở sản phẩm                                   
+                                                    updateProductQuantity(indexDanhSachSp, soluongGioHang);// trừ số lượng ở sản phẩm  
                                                     showDataGoHang(idHoaDonz);
                                                     showDataSanPham();
-                                                    JOptionPane.showMessageDialog(this, "Thay Đổi Số Lượng ");
+//                                                    JOptionPane.showMessageDialog(this, "Đã thêm sản phẩm vào giỏ");
                                                 }
 
                                             }
                                             showDataGoHang(idHoaDonz);
+                                            tinhVaThemTongTien(5);
+                                            JOptionPane.showMessageDialog(this, "Đã thêm sản phẩm vào giỏ");
                                         }
                                     }
                                 } else {
@@ -1245,12 +1244,11 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
                         if (gct.UpdateSo(hoaDonChiTiet.getGiayChiTiet().getiD(), soLuongCapNhat) != null) {
                             int index = tblListHoaDon.getSelectedRow();
                             HoaDon hoaDon = listHoaDon.get(index);
-
                             showDataSanPham();
                             showDataGoHang(hoaDon.getId());
-
-                            JOptionPane.showMessageDialog(this, "Xoá Thành Công");
                         }
+                        tinhVaThemTongTien(5);
+                        JOptionPane.showMessageDialog(this, "Xoá Thành Công");
                     }
                 }
             } else {
@@ -1392,27 +1390,25 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
                             Integer soLuongCapNhat = soLuongGioHang + Integer.valueOf(soLuongSanPham);
 
                             if (hdctrepo.delete(h.getId()) != null) {
-
                                 gct.UpdateSo(h.getGiayChiTiet().getiD(), soLuongCapNhat);
                                 showDataSanPham();
-                                JOptionPane.showMessageDialog(this, "Bỏ Sản Phẩm Thành Công");
                                 showDataGoHang(hoaDon.getId());
-                                break;
 
                             }
+                            tinhVaThemTongTien(5);
+                            JOptionPane.showMessageDialog(this, "Bỏ Sản Phẩm Thành Công");
                         }
                         if (Integer.parseInt(soLuongNhap) < Integer.parseInt(soLuongGioHangGoc)) {
                             if (soLuongNhap != null && !soLuongNhap.isEmpty()) {
                                 if (Integer.parseInt(soLuongNhap) >= 0) {
-
                                     Integer soLuongCapNhatsp = Integer.parseInt(soLuongSanPham) + Integer.parseInt(soLuongNhap);
-
                                     if (gct.UpdateSo(h.getGiayChiTiet().getiD(), soLuongCapNhatsp) != null) {
                                         Integer soLuongCapNhatGioHang = Integer.parseInt(soLuongGioHangGoc) - Integer.parseInt(soLuongNhap);
                                         hdctrepo.updateSoLuong(soLuongCapNhatGioHang, h.getGiayChiTiet().getiD());
-
                                         showDataGoHang(hoaDon.getId());
                                         showDataSanPham();
+                                        tinhVaThemTongTien(5);
+                                        JOptionPane.showMessageDialog(this, "Đã thay đổi số lượng sản phẩm");
                                     }
                                 } else {
                                     JOptionPane.showMessageDialog(this, "Số Lượng Phải Là Số Dương");
@@ -1424,19 +1420,13 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
                             JOptionPane.showMessageDialog(this, "Số Lượng trong giỏ không đủ");
                         }
                     } catch (NumberFormatException e) {
-                        JOptionPane.showMessageDialog(this, "Số Lượng Phải Là Số Nguyên");
+                        JOptionPane.showMessageDialog(this, "Vui lòng nhập một số nguyên");
+                        return;
                     }
                 }
                 case 1 -> {
-                    Integer soLuongGioHang = (Integer) tblGioHangCho.getValueAt(i, 3);
-                    Integer soLuongCapNhat = soLuongGioHang + Integer.valueOf(soLuongSanPham);
-                    if (hdctrepo.delete(h.getId()) != null) {
-                        gct.UpdateSo(h.getGiayChiTiet().getiD(), soLuongCapNhat);
-                        showDataSanPham();
-                        JOptionPane.showMessageDialog(this, "Xoá Thành Công");
 
-                        showDataGoHang(hoaDon.getId());
-                    }
+                    return;
                 }
             }
         }
@@ -1459,7 +1449,7 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
                 BigDecimal Diem = khrp.selectTichDiem(ma);
                 if (khrp.selectTichDiem(ma) != null) {
                     lblKiemTraDiem.setText(Diem.toString());
-                    tinhVaThemTongTien(7).subtract(Diem);
+                    tinhVaThemTongTien(5).subtract(Diem);
                     btnTra.setEnabled(false);
                 }
             }
@@ -1471,7 +1461,7 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
     private void btnSuDungDienMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSuDungDienMouseClicked
         String ma = txtMaKhach.getText().trim();
         BigDecimal diem = new BigDecimal(lblKiemTraDiem.getText().trim());
-        BigDecimal result = tinhVaThemTongTien(7).subtract(diem);
+        BigDecimal result = tinhVaThemTongTien(5).subtract(diem);
         BigDecimal diemConlai = diem.subtract(diem);
 
         // Kiểm tra hủy sử dụng điểm
@@ -1536,7 +1526,7 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
                     lblKiemTraDiem.setForeground(getForeground());
                     lblTienThua.setText("0");
                     txtTienKhachDua.setText("");
-                    lblTongTien.setText(tinhVaThemTongTien(7).toString());
+                    lblTongTien.setText(tinhVaThemTongTien(5).toString());
                     BigDecimal Diem = khrp.selectTichDiem(k.getMa());
                     lblDiemKH.setText(Diem.toString());
                     return;
@@ -1546,19 +1536,16 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
                     lblErrKhach.setText("Không tìm thấy khách hàng tương ứng!");
                 }
             } else {
-                    lblErrKhach.setText(null);
-                    lblDiemKH.setText(null);
-                    lblKhachHang.setText(null);
-            }}
+                lblErrKhach.setText(null);
+                lblDiemKH.setText(null);
+                lblKhachHang.setText(null);
+            }
+        }
     }//GEN-LAST:event_txtMaKhachKeyReleased
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
 
     }//GEN-LAST:event_jButton4ActionPerformed
-
-    private void btnSuDungDienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuDungDienActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnSuDungDienActionPerformed
 
     private void btnHuyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHuyActionPerformed
         int i = tblListHoaDon.getSelectedRow();
@@ -1700,6 +1687,7 @@ private void huySuDungDiem(String ma, BigDecimal diem, BigDecimal result) {
             BigDecimal diemHuy = tdrp.selectDiem(ma);
             lblKiemTraDiem.setForeground(java.awt.Color.BLACK);
             lblKiemTraDiem.setText(String.valueOf(diemHuy));
+            lblDiemKH.setText(String.valueOf(diemHuy));
             BigDecimal tongTien = result;
             BigDecimal tongTienHuy = tongTien.add(diem);
             lblTongTien.setText(String.valueOf(tongTienHuy));
@@ -1731,6 +1719,7 @@ private void huySuDungDiem(String ma, BigDecimal diem, BigDecimal result) {
                         lblTienThua.setText(String.valueOf(tienKhachDua.subtract(result)));
                         lblKiemTraDiem.setForeground(java.awt.Color.RED);
                         lblKiemTraDiem.setText(String.valueOf(diemConlai));
+                        lblDiemKH.setText(String.valueOf(diemConlai));
                     } else {
                         lblErrKiemTraDiem.setText("Không thể sử dụng");
                     }
