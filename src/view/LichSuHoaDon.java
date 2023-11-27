@@ -140,7 +140,7 @@ public class LichSuHoaDon extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(0, 153, 51));
-        jLabel2.setText("LỊCH SỬ HOÁ ĐƠN");
+        jLabel2.setText("HÓA ĐƠN");
 
         buttonGroup1.add(rdoHuy);
         rdoHuy.setText("Huỷ ");

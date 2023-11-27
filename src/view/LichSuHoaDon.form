@@ -164,7 +164,7 @@
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="33" green="99" red="0" type="rgb"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="L&#x1eca;CH S&#x1eec; HO&#xc1; &#x110;&#x1a0;N"/>
+        <Property name="text" type="java.lang.String" value="H&#xd3;A &#x110;&#x1a0;N"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JRadioButton" name="rdoHuy">

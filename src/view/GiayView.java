@@ -339,7 +339,7 @@ public class GiayView extends javax.swing.JPanel {
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
         Giay giay = getForm();
         if (giay == null) {
-            return;
+            JOPane.showMessageDialog(this, "Thêm thất bại!");
         } else {
             boolean confirm = JOPane.showConfirmDialog(this, "Are you sure?");
             if (confirm) {

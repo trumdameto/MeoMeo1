@@ -96,7 +96,7 @@ public class GiayChiTietFrame extends javax.swing.JFrame {
             int finalI = i;
             combo[i].addMouseListener(new MouseAdapter() {
                 private boolean dataUpdated = false;
-
+//Khi người dùng nhấn chuột vào các cbo thì load lại dữ liệu các cbo đó
                 @Override
                 public void mousePressed(MouseEvent e) {
                     if (!dataUpdated) {

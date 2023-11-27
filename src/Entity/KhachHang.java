@@ -29,11 +29,6 @@ public class KhachHang {
         this.idTichDiem = idTichDiem;
     }
 
-    
-    
-
-    
-
     public String getId() {
         return id;
     }

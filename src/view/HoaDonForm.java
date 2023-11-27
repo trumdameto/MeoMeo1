@@ -21,6 +21,7 @@ import com.google.zxing.common.HybridBinarizer;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.HeadlessException;
 import java.awt.image.BufferedImage;
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -72,21 +73,36 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
         modelListHoaDon = (DefaultTableModel) tblListHoaDon.getModel();
         modelListGioHang.setRowCount(0);
 
-        column();
-        column1();
-        column2();
-
         showDataSanPham();
         showDaTAHoaDon();
         comBoMaGiay();
         this.configTblCol();
     }
-    
-    private void configTblCol()
-    {
+
+    private void configTblCol() {
+        //Config bảng giỏ hàng
         this.tblGioHangCho.getColumnModel().getColumn(0).setPreferredWidth(40);
         this.tblGioHangCho.getColumnModel().getColumn(1).setPreferredWidth(60);
         this.tblGioHangCho.getColumnModel().getColumn(2).setPreferredWidth(120);
+        this.tblGioHangCho.getColumnModel().getColumn(3).setPreferredWidth(60);
+        //Config bảng hóa đơn
+        this.tblListHoaDon.getColumnModel().getColumn(0).setPreferredWidth(40);
+        this.tblListHoaDon.getColumnModel().getColumn(1).setPreferredWidth(80);
+        this.tblListHoaDon.getColumnModel().getColumn(2).setPreferredWidth(90);
+        this.tblListHoaDon.getColumnModel().getColumn(3).setPreferredWidth(60);
+        this.tblListHoaDon.getColumnModel().getColumn(4).setPreferredWidth(110);
+        //Config bảng danh sách sản phẩm
+        this.tblDanhSachSp.getColumnModel().getColumn(0).setPreferredWidth(50);
+        this.tblDanhSachSp.getColumnModel().getColumn(1).setPreferredWidth(120);
+        this.tblDanhSachSp.getColumnModel().getColumn(2).setPreferredWidth(80);
+        this.tblDanhSachSp.getColumnModel().getColumn(3).setPreferredWidth(80);
+        this.tblDanhSachSp.getColumnModel().getColumn(4).setPreferredWidth(80);
+        this.tblDanhSachSp.getColumnModel().getColumn(5).setPreferredWidth(80);
+        this.tblDanhSachSp.getColumnModel().getColumn(6).setPreferredWidth(50);
+        this.tblDanhSachSp.getColumnModel().getColumn(7).setPreferredWidth(70);
+        this.tblDanhSachSp.getColumnModel().getColumn(8).setPreferredWidth(80);
+        this.tblDanhSachSp.getColumnModel().getColumn(9).setPreferredWidth(80);
+
     }
 
     private void initWebcam() {
@@ -143,7 +159,7 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
                 if (check == JOptionPane.YES_OPTION) {
                     if (!lblMaHoaDon.getText().isEmpty()) {
                         if (indexDanhSachSp >= 0) {
-                            Integer soLuongGoc = Integer.valueOf(tblDanhSachSp.getValueAt(indexDanhSachSp, 5).toString());
+                            Integer soLuongGoc = Integer.valueOf(tblDanhSachSp.getValueAt(indexDanhSachSp, 7).toString());
                             if (soLuongGoc >= 0) {
 
                                 String soLuong = JOptionPane.showInputDialog(null, "Nhập Số Lượng");
@@ -155,7 +171,7 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
                                             HoaDon indexHoaDon = listHoaDon.get(selectedRow);//Lý Do
                                             String idHoaDonz = indexHoaDon.getId();
                                             GiayChiTiet indexGiay = listGiayChiTiet.get(indexDanhSachSp);
-                                            String donGia = tblDanhSachSp.getValueAt(indexDanhSachSp, 6).toString();
+                                            String donGia = tblDanhSachSp.getValueAt(indexDanhSachSp, 8).toString();
                                             int soluongGioHang = Integer.parseInt(soLuong);
                                             Integer soLuongGocGioHang = hdctrepo.selectSoLuongGioHangGoc(idHoaDonz, indexGiay.getiD());
                                             Integer soLuongGiHangThayDoi = soluongGioHang + soLuongGocGioHang;
@@ -258,6 +274,8 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
             v.add(g.getGiay().getMa());
             v.add(g.getGiay().getName());
             v.add(g.getHang().getName());
+            v.add(g.getKieuDang().getName());
+            v.add(g.getDanhMuc().getName());
             v.add(g.getMauSac().getName());
             v.add(g.getKichCo().getSize());
             v.add(g.getSoLuong());
@@ -284,7 +302,7 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
 
     private void showDataGoHang(String id) {
         try {
-//            int row =tblGioHangCho.getSelectedRow() ;
+//            int row = tblGioHangCho.getSelectedRow();
 //            int tongT = Integer.parseInt(tblGioHangCho.getValueAt(row, 5).toString());
             listHoaDonChiTiet = hdctrepo.getAllHoaDonChiTietByHoaDonID(id);
 
@@ -352,18 +370,6 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
 
     }
 
-    private void column() {
-        model.setColumnIdentifiers(new String[]{"Mã giày", "Tên giày ", "Hãng", "Màu", "Kích cỡ", "Số lượng", "Đơn giá", "Trạng thái"});
-    }
-
-    private void column1() {
-        modelListGioHang.setColumnIdentifiers(new String[]{"STT", "Mã giày", "Tên giày ", "Số lượng", "Đơn giá", "Tổng giá"});
-    }
-
-    private void column2() {
-        modelListHoaDon.setColumnIdentifiers(new String[]{"STT", "Mã hóa đơn ", "Ngày tạo", "Mã NV", "Trạng thái"});
-    }
-
     void resetThanhToan() {
         lblMaHoaDon.setText(null);
         txtTienKhachDua.setText("0");
@@ -379,7 +385,7 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
     }
 
     private void updateProductQuantity(int i, int quantity) {
-        int quantityInRow = Integer.parseInt(tblDanhSachSp.getValueAt(i, 5).toString());
+        int quantityInRow = Integer.parseInt(tblDanhSachSp.getValueAt(i, 7).toString());
         int updatedQuantity = quantityInRow - quantity;
         gct.UpdateSo(listGiayChiTiet.get(i).getiD(), updatedQuantity);
 
@@ -398,7 +404,6 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
         btnDelete = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         tblGioHangCho = new javax.swing.JTable();
-        btnDeleteAll = new javax.swing.JButton();
         pnlDSHD = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblListHoaDon = new javax.swing.JTable();
@@ -447,6 +452,7 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
         lblKhachHang = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
         lblErrKhach = new javax.swing.JLabel();
+        lblDiemKH = new javax.swing.JLabel();
         jpnQR = new javax.swing.JPanel();
         jSeparator3 = new javax.swing.JSeparator();
 
@@ -457,25 +463,46 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
         tblDanhSachSp.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         tblDanhSachSp.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Mã", "Tên", "Hãng", "Kiểu dáng", "Danh mục", "Màu sắc", "Kích cỡ", "Số lượng", "Đơn giá", "Trạng thái"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblDanhSachSp.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        tblDanhSachSp.setColumnSelectionAllowed(true);
+        tblDanhSachSp.setDoubleBuffered(true);
         tblDanhSachSp.setRowHeight(25);
         tblDanhSachSp.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblDanhSachSpMouseClicked(evt);
             }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                tblDanhSachSpMouseEntered(evt);
-            }
         });
         jScrollPane1.setViewportView(tblDanhSachSp);
+        tblDanhSachSp.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        if (tblDanhSachSp.getColumnModel().getColumnCount() > 0) {
+            tblDanhSachSp.getColumnModel().getColumn(0).setResizable(false);
+            tblDanhSachSp.getColumnModel().getColumn(1).setResizable(false);
+            tblDanhSachSp.getColumnModel().getColumn(2).setResizable(false);
+            tblDanhSachSp.getColumnModel().getColumn(3).setResizable(false);
+            tblDanhSachSp.getColumnModel().getColumn(4).setResizable(false);
+            tblDanhSachSp.getColumnModel().getColumn(5).setResizable(false);
+            tblDanhSachSp.getColumnModel().getColumn(6).setResizable(false);
+            tblDanhSachSp.getColumnModel().getColumn(7).setResizable(false);
+            tblDanhSachSp.getColumnModel().getColumn(8).setResizable(false);
+            tblDanhSachSp.getColumnModel().getColumn(9).setResizable(false);
+        }
 
         lblError.setFont(new java.awt.Font("Serif", 1, 14)); // NOI18N
         lblError.setForeground(new java.awt.Color(204, 0, 0));
@@ -526,17 +553,17 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
         tblGioHangCho.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         tblGioHangCho.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "STT", "Mã", "Tên", "Số lượng", "Đơn giá", "Tổng giá"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -557,16 +584,9 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
             tblGioHangCho.getColumnModel().getColumn(1).setResizable(false);
             tblGioHangCho.getColumnModel().getColumn(2).setResizable(false);
             tblGioHangCho.getColumnModel().getColumn(3).setResizable(false);
+            tblGioHangCho.getColumnModel().getColumn(4).setResizable(false);
+            tblGioHangCho.getColumnModel().getColumn(5).setResizable(false);
         }
-
-        btnDeleteAll.setBackground(new java.awt.Color(0, 0, 0));
-        btnDeleteAll.setForeground(new java.awt.Color(255, 255, 255));
-        btnDeleteAll.setText("Bỏ tất cả sản phẩm");
-        btnDeleteAll.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDeleteAllActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout pnlGioHangLayout = new javax.swing.GroupLayout(pnlGioHang);
         pnlGioHang.setLayout(pnlGioHangLayout);
@@ -577,8 +597,6 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
                 .addGroup(pnlGioHangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane3)
                     .addGroup(pnlGioHangLayout.createSequentialGroup()
-                        .addComponent(btnDeleteAll)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnDelete)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -589,9 +607,7 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlGioHangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnDeleteAll)
-                    .addComponent(btnDelete))
+                .addComponent(btnDelete)
                 .addGap(39, 39, 39))
         );
 
@@ -601,15 +617,26 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
         tblListHoaDon.setForeground(new java.awt.Color(51, 51, 51));
         tblListHoaDon.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "STT", "Mã hóa đơn", "Ngày tạo", "Mã NV", "Trạng thái"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblListHoaDon.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        tblListHoaDon.setColumnSelectionAllowed(true);
+        tblListHoaDon.setDoubleBuffered(true);
         tblListHoaDon.setRowHeight(25);
         tblListHoaDon.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -617,6 +644,14 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
             }
         });
         jScrollPane2.setViewportView(tblListHoaDon);
+        tblListHoaDon.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        if (tblListHoaDon.getColumnModel().getColumnCount() > 0) {
+            tblListHoaDon.getColumnModel().getColumn(0).setResizable(false);
+            tblListHoaDon.getColumnModel().getColumn(1).setResizable(false);
+            tblListHoaDon.getColumnModel().getColumn(2).setResizable(false);
+            tblListHoaDon.getColumnModel().getColumn(3).setResizable(false);
+            tblListHoaDon.getColumnModel().getColumn(4).setResizable(false);
+        }
 
         javax.swing.GroupLayout pnlDSHDLayout = new javax.swing.GroupLayout(pnlDSHD);
         pnlDSHD.setLayout(pnlDSHDLayout);
@@ -820,11 +855,6 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
         btnHuy.setBackground(new java.awt.Color(0, 0, 0));
         btnHuy.setForeground(new java.awt.Color(255, 255, 255));
         btnHuy.setText("Huỷ Hoá Đơn");
-        btnHuy.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnHuyMouseClicked(evt);
-            }
-        });
         btnHuy.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnHuyActionPerformed(evt);
@@ -1038,6 +1068,12 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
 
         lblErrKhach.setFont(new java.awt.Font("Times New Roman", 0, 13)); // NOI18N
         lblErrKhach.setForeground(new java.awt.Color(204, 0, 0));
+        lblErrKhach.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        lblDiemKH.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        lblDiemKH.setForeground(new java.awt.Color(255, 51, 0));
+        lblDiemKH.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblDiemKH.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Điểm tích lũy", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14))); // NOI18N
 
         javax.swing.GroupLayout pnlThanhVienLayout = new javax.swing.GroupLayout(pnlThanhVien);
         pnlThanhVien.setLayout(pnlThanhVienLayout);
@@ -1045,29 +1081,33 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
             pnlThanhVienLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlThanhVienLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(pnlThanhVienLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlThanhVienLayout.createSequentialGroup()
+                .addGroup(pnlThanhVienLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lblErrKhach, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(pnlThanhVienLayout.createSequentialGroup()
                         .addGroup(pnlThanhVienLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtMaKhach)
                             .addComponent(lblKhachHang, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(85, 85, 85))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlThanhVienLayout.createSequentialGroup()
-                        .addComponent(lblErrKhach, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(106, 106, 106))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlThanhVienLayout.createSequentialGroup()
-                        .addComponent(jButton3)
-                        .addGap(135, 135, 135))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblDiemKH, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlThanhVienLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton3)
+                .addGap(135, 135, 135))
         );
         pnlThanhVienLayout.setVerticalGroup(
             pnlThanhVienLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlThanhVienLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(txtMaKhach, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblKhachHang, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblErrKhach, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(pnlThanhVienLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(pnlThanhVienLayout.createSequentialGroup()
+                        .addComponent(txtMaKhach, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblKhachHang, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblDiemKH, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                .addComponent(lblErrKhach, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton3))
         );
 
@@ -1118,28 +1158,20 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void tblDanhSachSpMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDanhSachSpMouseEntered
-
-    }//GEN-LAST:event_tblDanhSachSpMouseEntered
-
     private void tblDanhSachSpMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDanhSachSpMouseClicked
-
         int check = JOptionPane.showConfirmDialog(this, "Bỏ Vào Giỏ ! Mua");
-
         int indexDanhSachSp = tblDanhSachSp.getSelectedRow();
-
         listGiayChiTiet = gct.getAllGiay();
         listHoaDon = hdrepo.getAllHoaDon();
 
         if (check == JOptionPane.YES_OPTION) {
-
             if (!lblMaHoaDon.getText().isEmpty()) {
                 if (indexDanhSachSp >= 0) {
-                    Integer soLuongGoc = Integer.valueOf(tblDanhSachSp.getValueAt(indexDanhSachSp, 5).toString());
+                    Integer soLuongGoc = Integer.valueOf(tblDanhSachSp.getValueAt(indexDanhSachSp, 7).toString());
                     if (soLuongGoc >= 0) {
 
                         String soLuong = JOptionPane.showInputDialog(null, "Nhập Số Lượng");
-                        if (Integer.valueOf(soLuong) > 0) {
+                        if (Integer.parseInt(soLuong) > 0) {
                             try {
                                 if (Integer.valueOf(soLuong) <= soLuongGoc) {
 
@@ -1148,7 +1180,7 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
                                         HoaDon indexHoaDon = listHoaDon.get(selectedRow);//Lý Do
                                         String idHoaDonz = indexHoaDon.getId();
                                         GiayChiTiet indexGiay = listGiayChiTiet.get(indexDanhSachSp);
-                                        String donGia = tblDanhSachSp.getValueAt(indexDanhSachSp, 6).toString();
+                                        String donGia = tblDanhSachSp.getValueAt(indexDanhSachSp, 8).toString();
                                         int soluongGioHang = Integer.parseInt(soLuong);
                                         Integer soLuongGocGioHang = hdctrepo.selectSoLuongGioHangGoc(idHoaDonz, indexGiay.getiD());
                                         Integer soLuongGiHangThayDoi = soluongGioHang + soLuongGocGioHang;
@@ -1171,16 +1203,10 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
 
                                             }
                                             showDataGoHang(idHoaDonz);
-                                            BigDecimal tongtien = tinhVaThemTongTien(5);
-
                                         }
-
                                     }
-
                                 } else {
                                     lblError.setText("Xin Lỗi ! Chúng Tôi Không Có Đủ Số Lượng ");
-
-                                    return;
                                 }
                             } catch (NumberFormatException e) {
                                 JOptionPane.showMessageDialog(this, "Số Lượng không Đúng Định Dạng Số");
@@ -1189,9 +1215,7 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
                             lblError.setText("Số lượng không âm");
                         }
                     } else {
-
                         lblError.setText("HẾT HÀNG");
-                        return;
                     }
 
                 } else {
@@ -1199,8 +1223,6 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
                 }
             } else {
                 lblError.setText("Xin Lỗi ! Bạn Chưa Chọn Hoặc Tạo Hoá Đơn ");
-
-                return;
             }
         }
     }//GEN-LAST:event_tblDanhSachSpMouseClicked
@@ -1209,7 +1231,6 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
 
         int check = JOptionPane.showConfirmDialog(this, "Xoá Khỏi Giỏ ? Xoá ");
 
-        String idHoaDon = hdrepo.selectiIdHoaDon();
         try {
             int indexDelete = tblGioHangCho.getSelectedRow();
             if (indexDelete >= 0) {
@@ -1217,9 +1238,9 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
                     HoaDonChiTiet hoaDonChiTiet = listHoaDonChiTiet.get(indexDelete);
 
                     if (hdctrepo.delete(hoaDonChiTiet.getId()) != null) {
-                        Integer soLuongGioHang = Integer.parseInt(tblGioHangCho.getValueAt(indexDelete, 3).toString());
+                        Integer soLuongGioHang = Integer.valueOf(tblGioHangCho.getValueAt(indexDelete, 3).toString());
                         String soLuongSanPham = hdctrepo.selectSoLuongSanPham(hoaDonChiTiet.getGiayChiTiet().getiD());
-                        Integer soLuongCapNhat = soLuongGioHang + Integer.parseInt(soLuongSanPham);
+                        Integer soLuongCapNhat = soLuongGioHang + Integer.valueOf(soLuongSanPham);
 
                         if (gct.UpdateSo(hoaDonChiTiet.getGiayChiTiet().getiD(), soLuongCapNhat) != null) {
                             int index = tblListHoaDon.getSelectedRow();
@@ -1227,16 +1248,13 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
 
                             showDataSanPham();
                             showDataGoHang(hoaDon.getId());
-                            BigDecimal tongTien = tinhVaThemTongTien(5);
 
                             JOptionPane.showMessageDialog(this, "Xoá Thành Công");
-                            return;
                         }
                     }
                 }
             } else {
                 JOptionPane.showMessageDialog(this, "Chưa Chọn Mà Xoá");
-                return;
             }
         } catch (IndexOutOfBoundsException e) {
             e.printStackTrace();
@@ -1268,7 +1286,7 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
                     }
                 }
             }
-        } catch (Exception e) {
+        } catch (HeadlessException e) {
             e.printStackTrace();
         }
 
@@ -1357,39 +1375,50 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
             int i = tblGioHangCho.getSelectedRow();
             int index = tblListHoaDon.getSelectedRow();
             int messegertype = JOptionPane.QUESTION_MESSAGE;
-            String[] obtion = {"Số Lượng", "Xoá", "Huỷ"};
+            String[] obtion = {"Bỏ sản phẩm", "Huỷ"};
             HoaDonChiTiet h = listHoaDonChiTiet.get(i);
             String soLuongSanPham = hdctrepo.selectSoLuongSanPham(h.getGiayChiTiet().getiD());
             HoaDon hoaDon = listHoaDon.get(index);
 
             int code = JOptionPane.showOptionDialog(this, "BẠN MUỐN LÀM GÌ ?", "LỰA CHỌN", 0, messegertype, null, obtion, "Số Lượng");
             switch (code) {
-                case 0:
+                case 0 -> {
                     String soLuongGioHangGoc = tblGioHangCho.getValueAt(i, 3).toString();
-                    String soLuongNhap = JOptionPane.showInputDialog("Nhập Số Lượng");
+                    String soLuongNhap = JOptionPane.showInputDialog("Nhập Số Lượng Muốn Bỏ");
 
                     try {
+                        if (Integer.parseInt(soLuongNhap) == Integer.parseInt(soLuongGioHangGoc)) {
+                            Integer soLuongGioHang = (Integer) tblGioHangCho.getValueAt(i, 3);
+                            Integer soLuongCapNhat = soLuongGioHang + Integer.valueOf(soLuongSanPham);
+
+                            if (hdctrepo.delete(h.getId()) != null) {
+
+                                gct.UpdateSo(h.getGiayChiTiet().getiD(), soLuongCapNhat);
+                                showDataSanPham();
+                                JOptionPane.showMessageDialog(this, "Bỏ Sản Phẩm Thành Công");
+                                showDataGoHang(hoaDon.getId());
+                                break;
+
+                            }
+                        }
                         if (Integer.parseInt(soLuongNhap) < Integer.parseInt(soLuongGioHangGoc)) {
                             if (soLuongNhap != null && !soLuongNhap.isEmpty()) {
-                                Integer soLuongNhapEpKieu = Integer.parseInt(soLuongNhap);
+                                if (Integer.parseInt(soLuongNhap) >= 0) {
 
-                                if (soLuongNhapEpKieu >= 0) {
-
-                                    Integer soLuongCapNhatsp = Integer.parseInt(soLuongSanPham) + soLuongNhapEpKieu;
+                                    Integer soLuongCapNhatsp = Integer.parseInt(soLuongSanPham) + Integer.parseInt(soLuongNhap);
 
                                     if (gct.UpdateSo(h.getGiayChiTiet().getiD(), soLuongCapNhatsp) != null) {
-                                        Integer soLuongCapNhatGioHang = Integer.parseInt(soLuongGioHangGoc) - soLuongNhapEpKieu;
+                                        Integer soLuongCapNhatGioHang = Integer.parseInt(soLuongGioHangGoc) - Integer.parseInt(soLuongNhap);
                                         hdctrepo.updateSoLuong(soLuongCapNhatGioHang, h.getGiayChiTiet().getiD());
+
                                         showDataGoHang(hoaDon.getId());
                                         showDataSanPham();
-                                        BigDecimal tongtien = tinhVaThemTongTien(5);
-
                                     }
                                 } else {
                                     JOptionPane.showMessageDialog(this, "Số Lượng Phải Là Số Dương");
                                 }
                             } else {
-                                JOptionPane.showMessageDialog(this, "Vui lòng nhập Số Lượng");
+                                JOptionPane.showMessageDialog(this, "Vui Lòng Nhập Số Lượng Muốn Bỏ");
                             }
                         } else {
                             JOptionPane.showMessageDialog(this, "Số Lượng trong giỏ không đủ");
@@ -1397,26 +1426,18 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
                     } catch (NumberFormatException e) {
                         JOptionPane.showMessageDialog(this, "Số Lượng Phải Là Số Nguyên");
                     }
-
-                    break;
-                case 1:
-
+                }
+                case 1 -> {
                     Integer soLuongGioHang = (Integer) tblGioHangCho.getValueAt(i, 3);
-
-                    Integer soLuongCapNhat = soLuongGioHang + Integer.parseInt(soLuongSanPham);
-
+                    Integer soLuongCapNhat = soLuongGioHang + Integer.valueOf(soLuongSanPham);
                     if (hdctrepo.delete(h.getId()) != null) {
-
                         gct.UpdateSo(h.getGiayChiTiet().getiD(), soLuongCapNhat);
                         showDataSanPham();
                         JOptionPane.showMessageDialog(this, "Xoá Thành Công");
 
                         showDataGoHang(hoaDon.getId());
-                        BigDecimal tongtien = tinhVaThemTongTien(5);
-
-                        break;
-
                     }
+                }
             }
         }
     }//GEN-LAST:event_tblGioHangChoMouseClicked
@@ -1425,20 +1446,6 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
         DangKyThanhVienForm t = new DangKyThanhVienForm();
         t.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
-
-    private void btnDeleteAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteAllActionPerformed
-
-        int check = JOptionPane.showConfirmDialog(this, "Xoá Hết Sản Phẩm Khỏi Giỏ");
-        if (check == JOptionPane.YES_OPTION) {
-            int indexHoaDon = tblListHoaDon.getSelectedRow();
-            HoaDon hoaDon = listHoaDon.get(indexHoaDon);
-            if (hdrepo.deleteAllHoaDonChiTiet(hoaDon.getId()) != null) {
-                showDataSanPham();
-                showDataGoHang(hoaDon.getId());
-            }
-
-        }
-    }//GEN-LAST:event_btnDeleteAllActionPerformed
 
     private void btnTraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTraActionPerformed
         if (!lblMaHoaDon.getText().trim().isEmpty()) {
@@ -1452,7 +1459,7 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
                 BigDecimal Diem = khrp.selectTichDiem(ma);
                 if (khrp.selectTichDiem(ma) != null) {
                     lblKiemTraDiem.setText(Diem.toString());
-                    tinhVaThemTongTien(5).subtract(Diem);
+                    tinhVaThemTongTien(7).subtract(Diem);
                     btnTra.setEnabled(false);
                 }
             }
@@ -1464,7 +1471,7 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
     private void btnSuDungDienMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSuDungDienMouseClicked
         String ma = txtMaKhach.getText().trim();
         BigDecimal diem = new BigDecimal(lblKiemTraDiem.getText().trim());
-        BigDecimal result = tinhVaThemTongTien(5).subtract(diem);
+        BigDecimal result = tinhVaThemTongTien(7).subtract(diem);
         BigDecimal diemConlai = diem.subtract(diem);
 
         // Kiểm tra hủy sử dụng điểm
@@ -1475,41 +1482,9 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
 
         // Kiểm tra sử dụng điểm
         if (evt.getClickCount() == 1) {
-            suDungDiem(ma, diem, result, diemConlai);
+            suDungDiem(ma, result, diemConlai);
         }
     }//GEN-LAST:event_btnSuDungDienMouseClicked
-
-    private void btnHuyMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnHuyMouseClicked
-        int i = tblListHoaDon.getSelectedRow();
-        listHoaDon = hdrepo.getAllHoaDon();
-
-        if (i >= 0) {
-            int check = JOptionPane.showConfirmDialog(this, "Huỷ Hoá Đơn");
-
-            if (check == JOptionPane.YES_OPTION) {
-                HoaDon selectedHoaDon = listHoaDon.get(i);
-                BigDecimal totalAmount = new BigDecimal(lblTongTien.getText().trim());
-
-                try {
-                    if (hdrepo.updateTrangThaiHoaDon("Huỷ", totalAmount, selectedHoaDon.getId()) != null) {
-
-                        showDaTAHoaDon();
-                        showDataSanPham();
-                        lblTongTien.setText("0");
-                        lblMaHoaDon.setText(null);
-                        txtMaHoaDon2.setText("0");
-
-                        JOptionPane.showMessageDialog(this, "Huỷ Thành Công");
-                    }
-                } catch (Exception ex) {
-                    ex.printStackTrace(); // Log the exception for debugging
-                    JOptionPane.showMessageDialog(this, "An error occurred while cancelling the invoice.");
-                }
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "Muốn hủy hóa đơn nào cơ ?");
-        }
-    }//GEN-LAST:event_btnHuyMouseClicked
 
     private void txtTienKhachDuaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTienKhachDuaKeyReleased
         String tienKhachDua = txtTienKhachDua.getText().trim();
@@ -1517,7 +1492,7 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
             BigDecimal tienKhachDuaDecimal = new BigDecimal(tienKhachDua);
 
             BigDecimal tongTien = new BigDecimal(lblTongTien.getText().trim());
-            if (!tienKhachDua.equalsIgnoreCase("0") || !tienKhachDua.isEmpty() || tongTien != null) {
+            if (!tienKhachDua.equalsIgnoreCase("0") || !tienKhachDua.isEmpty()) {
 
                 if (tienKhachDuaDecimal.compareTo(tongTien) == 1 || tienKhachDuaDecimal.compareTo(tongTien) == 0) {
                     BigDecimal tienthua = tienKhachDuaDecimal.subtract(tongTien);
@@ -1552,22 +1527,29 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
     private void txtMaKhachKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMaKhachKeyReleased
         listKhachHang = khrp.getKhachHang();
         for (KhachHang k : listKhachHang) {
-            if (txtMaKhach.getText().equalsIgnoreCase(k.getMa())) {
-                lblKhachHang.setText(k.getName());
-                lblErrKhach.setText(null);
-                btnTra.setEnabled(true);
-                lblKiemTraDiem.setText("0");
-                lblKiemTraDiem.setForeground(getForeground());
-                lblTienThua.setText("0");
-                txtTienKhachDua.setText("");
-                lblTongTien.setText(tinhVaThemTongTien(5).toString());
-//                txtTienKhachDua.setText("0");
-                return;
+            if (!txtMaKhach.getText().trim().isEmpty() || !txtMaKhach.getText().trim().equalsIgnoreCase("")) {
+                if (txtMaKhach.getText().equalsIgnoreCase(k.getMa())) {
+                    lblKhachHang.setText(k.getName());
+                    lblErrKhach.setText(null);
+                    btnTra.setEnabled(true);
+                    lblKiemTraDiem.setText("0");
+                    lblKiemTraDiem.setForeground(getForeground());
+                    lblTienThua.setText("0");
+                    txtTienKhachDua.setText("");
+                    lblTongTien.setText(tinhVaThemTongTien(7).toString());
+                    BigDecimal Diem = khrp.selectTichDiem(k.getMa());
+                    lblDiemKH.setText(Diem.toString());
+                    return;
+                } else {
+                    lblDiemKH.setText(null);
+                    lblKhachHang.setText(null);
+                    lblErrKhach.setText("Không tìm thấy khách hàng tương ứng!");
+                }
             } else {
-                lblKhachHang.setText(null);
-                lblErrKhach.setText("Không tìm thấy khách hàng tương ứng!");
-            }
-        }
+                    lblErrKhach.setText(null);
+                    lblDiemKH.setText(null);
+                    lblKhachHang.setText(null);
+            }}
     }//GEN-LAST:event_txtMaKhachKeyReleased
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -1579,15 +1561,34 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
     }//GEN-LAST:event_btnSuDungDienActionPerformed
 
     private void btnHuyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHuyActionPerformed
-         int check = JOptionPane.showConfirmDialog(this, "Xoá Hết Sản Phẩm Khỏi Giỏ");
-        if (check == JOptionPane.YES_OPTION) {
-            int indexHoaDon = tblListHoaDon.getSelectedRow();
-            HoaDon hoaDon = listHoaDon.get(indexHoaDon);
-            if (hdrepo.deleteAllHoaDonChiTiet(hoaDon.getId()) != null) {
-                showDataSanPham();
-                showDataGoHang(hoaDon.getId());
-            }
+        int i = tblListHoaDon.getSelectedRow();
+        listHoaDon = hdrepo.getAllHoaDon();
 
+        if (i >= 0) {
+            int check = JOptionPane.showConfirmDialog(this, "Huỷ Hoá Đơn");
+
+            if (check == JOptionPane.YES_OPTION) {
+                HoaDon selectedHoaDon = listHoaDon.get(i);
+                xoaSanPhamGio();
+                BigDecimal totalAmount = new BigDecimal(lblTongTien.getText().trim());
+
+                try {
+                    if (hdrepo.updateTrangThaiHoaDon("Huỷ", totalAmount, selectedHoaDon.getId()) != null) {
+                        showDaTAHoaDon();
+                        showDataSanPham();
+                        lblTongTien.setText("0");
+                        lblMaHoaDon.setText(null);
+                        txtMaHoaDon2.setText("0");
+
+                        JOptionPane.showMessageDialog(this, "Huỷ Thành Công");
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    System.out.println("Error: " + ex.getMessage());
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Muốn hủy hóa đơn nào cơ ?");
         }
     }//GEN-LAST:event_btnHuyActionPerformed
 
@@ -1595,11 +1596,6 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Window".equals(info.getName())) {
@@ -1639,7 +1635,6 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel CardMuaHang;
     private javax.swing.JButton btnDelete;
-    private javax.swing.JButton btnDeleteAll;
     private javax.swing.JButton btnHoaDon;
     private javax.swing.JButton btnHuy;
     private javax.swing.JButton btnSuDungDien;
@@ -1675,6 +1670,7 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JPanel jpnQR;
+    private javax.swing.JLabel lblDiemKH;
     private javax.swing.JLabel lblErrKhach;
     private javax.swing.JLabel lblErrKiemTraDiem;
     private javax.swing.JLabel lblErrTienKhachDua;
@@ -1718,7 +1714,7 @@ private void huySuDungDiem(String ma, BigDecimal diem, BigDecimal result) {
         }
     }
 
-    private void suDungDiem(String ma, BigDecimal diem, BigDecimal result, BigDecimal diemConlai) {
+    private void suDungDiem(String ma, BigDecimal result, BigDecimal diemConlai) {
         String tongTienText = lblTongTien.getText().trim();
         String tienKhachDuaText = txtTienKhachDua.getText().trim();
 
@@ -1731,7 +1727,6 @@ private void huySuDungDiem(String ma, BigDecimal diem, BigDecimal result) {
                     BigDecimal tienKhachDua = new BigDecimal(tienKhachDuaText);
 
                     if (tongTien.compareTo(BigDecimal.ZERO) != 0 && tienKhachDua.compareTo(BigDecimal.ZERO) > 0) {
-
                         lblTongTien.setText(String.valueOf(result));
                         lblTienThua.setText(String.valueOf(tienKhachDua.subtract(result)));
                         lblKiemTraDiem.setForeground(java.awt.Color.RED);
@@ -1746,6 +1741,19 @@ private void huySuDungDiem(String ma, BigDecimal diem, BigDecimal result) {
             }
         } else {
             JOptionPane.showMessageDialog(this, "Chưa tạo hóa đơn!");
+        }
+    }
+
+    //Xóa Sản Phẩm khỏi giỏ
+    private void xoaSanPhamGio() {
+        int check = JOptionPane.showConfirmDialog(this, "Hủy Hóa Đơn ?");
+        if (check == JOptionPane.YES_OPTION) {
+            int indexHoaDon = tblListHoaDon.getSelectedRow();
+            HoaDon hoaDon = listHoaDon.get(indexHoaDon);
+            if (hdrepo.deleteAllHoaDonChiTiet(hoaDon.getId()) != null) {
+                showDataSanPham();
+                showDataGoHang(hoaDon.getId());
+            }
         }
     }
 }
