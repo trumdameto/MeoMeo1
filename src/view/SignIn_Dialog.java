@@ -342,7 +342,7 @@ public class SignIn_Dialog extends javax.swing.JDialog {
     }//GEN-LAST:event_lblForgotPasswordMouseClicked
 
     private void txtUsernameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUsernameKeyReleased
-        if (txtUsername.getText().equals("NV0")) {
+        if (txtUsername.getText().equals("NV000")) {
             rdoAdmin.setEnabled(true);
             rdoAdmin.setSelected(true);
             rdoStaff.setEnabled(false);

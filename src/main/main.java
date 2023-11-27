@@ -18,6 +18,8 @@ import org.jdesktop.animation.timing.TimingTargetAdapter;
 import swing.CloseFrame;
 import view.GiayPanel;
 import view.GiayView;
+import view.HoaDonForm;
+import view.LichSuHoaDon;
 import view.MenuFrame;
 import view.QLSP;
 import view.QuanLySP;
@@ -56,13 +58,11 @@ public class main extends javax.swing.JFrame implements CloseFrame{
                         mainForm.showForm(new QLSP());
                    }
                 }else if(menuIdex==1){
-                    if(subMenuIdex==0){
-                    
+                  if(subMenuIdex==0){
+                     new HoaDonForm().setVisible(true);
                     }else if(subMenuIdex==1){
-                        mainForm.showForm(new panel3());
+                        new LichSuHoaDon().setVisible(true);
                     }
-                } else if(menuIdex==4){
-                     closeFrame(main.this);
                      
                 }
             }
@@ -116,11 +116,7 @@ public class main extends javax.swing.JFrame implements CloseFrame{
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+     
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -137,9 +133,7 @@ public class main extends javax.swing.JFrame implements CloseFrame{
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
 
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new main().setVisible(true);

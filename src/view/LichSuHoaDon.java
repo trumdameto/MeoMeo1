@@ -102,7 +102,7 @@ public class LichSuHoaDon extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         chkShowAll = new javax.swing.JCheckBox();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         tblLichSuHoaDon.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         tblLichSuHoaDon.setModel(new javax.swing.table.DefaultTableModel(

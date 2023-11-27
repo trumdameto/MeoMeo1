@@ -48,7 +48,6 @@ public class GiayView extends javax.swing.JPanel {
         return giay;
     }
 //Làm mới form
-
     void clear() {
         txtMa.setText("");
         txtTen.setText("");
