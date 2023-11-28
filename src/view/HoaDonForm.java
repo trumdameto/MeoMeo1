@@ -480,13 +480,10 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
             }
         });
         tblDanhSachSp.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
-        tblDanhSachSp.setCellSelectionEnabled(false);
         tblDanhSachSp.setGridColor(new java.awt.Color(204, 204, 255));
         tblDanhSachSp.setIntercellSpacing(new java.awt.Dimension(5, 5));
         tblDanhSachSp.setOpaque(false);
         tblDanhSachSp.setRowHeight(25);
-        tblDanhSachSp.setRowMargin(5);
-        tblDanhSachSp.setRowSelectionAllowed(true);
         tblDanhSachSp.setSelectionBackground(new java.awt.Color(204, 255, 255));
         tblDanhSachSp.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -579,7 +576,6 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
         tblGioHangCho.setIntercellSpacing(new java.awt.Dimension(5, 5));
         tblGioHangCho.setOpaque(false);
         tblGioHangCho.setRowHeight(25);
-        tblGioHangCho.setRowMargin(5);
         tblGioHangCho.setSelectionBackground(new java.awt.Color(204, 255, 255));
         tblGioHangCho.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -602,12 +598,11 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
             pnlGioHangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlGioHangLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlGioHangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3)
-                    .addGroup(pnlGioHangLayout.createSequentialGroup()
-                        .addComponent(btnDelete)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                .addComponent(btnDelete)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(pnlGioHangLayout.createSequentialGroup()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 546, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         pnlGioHangLayout.setVerticalGroup(
             pnlGioHangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -625,6 +620,7 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
         tblListHoaDon.setForeground(new java.awt.Color(51, 51, 51));
         tblListHoaDon.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
+                {null, null, null, null, null},
                 {null, null, null, null, null},
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -1529,11 +1525,12 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
             int check = JOptionPane.showConfirmDialog(this, "Huỷ Hoá Đơn");
             if (check == JOptionPane.YES_OPTION) {
                 HoaDon selectedHoaDon = listHoaDon.get(i);
+//                System.out.println("ID HD: "+selectedHoaDon.getId());
                 xoaSanPhamGio();
                 BigDecimal totalAmount = new BigDecimal(lblTongTien.getText().trim());
 
                 try {
-                    if (hdrepo.updateTrangThaiHoaDon("Huỷ", totalAmount, selectedHoaDon.getMaHoaDon()) != null) {
+                    if (hdrepo.updateTrangThaiHoaDon("Huỷ", totalAmount, selectedHoaDon.getId()) != null) {
                         showDaTAHoaDon();
                         showDataSanPham();
                         lblTongTien.setText("0");

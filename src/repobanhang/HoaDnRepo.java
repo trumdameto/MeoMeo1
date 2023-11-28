@@ -61,6 +61,59 @@ public class HoaDnRepo {
         return listkd;
     }
 
+    public List<HoaDon> getHDByEntity(String attribute, String value) {
+        List<HoaDon> listkd = new ArrayList<>();
+        String sql = "SELECT "
+                + "    HOADON.ID AS HOADON_ID, HOADON.MA AS HOADON_MA, HOADON.NGAYTAO AS HOADON_NGAYTAO,"
+                + "    HOADON.TEN_NGUOINHAN AS HOADON_TEN_NGUOINHAN, HOADON.SDT AS HOADON_SDT,"
+                + "    HOADON.DIACHI AS HOADON_DIACHI, HOADON.PHISHIP AS HOADON_PHISHIP,"
+                + "    HOADON.TONGTIEN AS HOADON_TONGTIEN, HOADON.TRANGTHAI AS HOADON_TRANGTHAI,"
+                + "    HOADON.TIENKHACHDUA AS HOADON_TIENKHACHDUA, HOADON.TIENTHUA AS HOADON_TIENTHUA, HOADON.HINHTHUCTHANHTOAN AS HOADON_HINHTHUCTHANHTOAN,"
+                + "    NHANVIEN.ID AS NHANVIEN_ID, NHANVIEN.MA AS NHANVIEN_MA, NHANVIEN.TEN AS NHANVIEN_TEN,"
+                + "    NHANVIEN.GIOITINH AS NHANVIEN_GIOITINH, NHANVIEN.SDT AS NHANVIEN_SDT,"
+                + "    NHANVIEN.DIACHI AS NHANVIEN_DIACHI, NHANVIEN.NGAYSINH AS NHANVIEN_NGAYSINH,"
+                + "    NHANVIEN.MATKHAU AS NHANVIEN_MATKHAU, NHANVIEN.VAITRO AS NHANVIEN_VAITRO,"
+                + "    NHANVIEN.TRANGTHAI AS NHANVIEN_TRANGTHAI,"
+                + "    KHACHHANG.ID AS KHACHHANG_ID, KHACHHANG.MA AS KHACHHANG_MA,"
+                + "    KHACHHANG.TEN AS KHACHHANG_TEN, KHACHHANG.GIOITINH AS KHACHHANG_GIOITINH,"
+                + "    KHACHHANG.SDT AS KHACHHANG_SDT, KHACHHANG.DIACHI AS KHACHHANG_DIACHI,KHACHHANG.ID_TICHDIEM AS ID_TICHDIEM"
+                + " FROM HOADON"
+                + " LEFT JOIN NHANVIEN ON HOADON.ID_NHANVIEN = NHANVIEN.ID"
+                + " LEFT JOIN KHACHHANG ON HOADON.ID_KHACHHANG = KHACHHANG.ID"
+                + " WHERE " + attribute + " =?"
+                + " ORDER BY HOADON_MA DESC"; // Sắp xếp theo HOADON_ID tăng dần (ASC)
+        try (Connection con = DbConText.getConnection(); PreparedStatement stm = con.prepareStatement(sql);) {
+            stm.setString(1, value);
+            ResultSet rs = stm.executeQuery(sql);
+            while (rs.next()) {
+                NhanVien n = new NhanVien(rs.getString("NHANVIEN_ID"), rs.getString("NHANVIEN_MA"), rs.getString("NHANVIEN_TEN"), rs.getBoolean("NHANVIEN_GIOITINH"),
+                        rs.getString("NHANVIEN_SDT"), rs.getString("NHANVIEN_DIACHI"),
+                        rs.getDate("NHANVIEN_NGAYSINH"), rs.getString("NHANVIEN_MATKHAU"), rs.getString("NHANVIEN_VAITRO"),
+                        rs.getString("NHANVIEN_TRANGTHAI"));
+                KhachHang k = new KhachHang(rs.getString("KHACHHANG_ID"), rs.getString("KHACHHANG_MA"), rs.getString("KHACHHANG_TEN"), rs.getBoolean("KHACHHANG_GIOITINH"),
+                        rs.getString("KHACHHANG_SDT"), rs.getString("KHACHHANG_DIACHI"), rs.getString("ID_TICHDIEM"));
+                listkd.add(new HoaDon(rs.getString("HOADON_ID"), rs.getString("HOADON_MA"), n, k, rs.getDate("HOADON_NGAYTAO"),
+                        rs.getString("HOADON_TEN_NGUOINHAN"), rs.getString("HOADON_SDT"), rs.getString("HOADON_DIACHI"),
+                        rs.getBigDecimal("HOADON_PHISHIP"), rs.getBigDecimal("HOADON_TONGTIEN"), rs.getString("HOADON_TRANGTHAI"), rs.getBigDecimal("HOADON_TIENKHACHDUA"),
+                        rs.getBigDecimal("HOADON_TIENTHUA"), rs.getString("HOADON_HINHTHUCTHANHTOAN")));
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return listkd;
+    }
+
+    // Phương thức với điều kiện WHERE ID_KHACHHANG
+    public List<HoaDon> getAllHoaDonByKhachHang(String maKH) {
+        return getHDByEntity("KHACHHANG_MA", maKH);
+    }
+      // Phương thức với điều kiện WHERE ID_NHANVIEN
+    public List<HoaDon> getAllHoaDonByNhanVien(String maNV) {
+        return getHDByEntity("NHANVIEN_MA", maNV);
+    }
+
     public HoaDon creatHoaDon(HoaDon h) {
         String sql = "INSERT INTO HOADON (ID,MA, ID_NHANVIEN, ID_KHACHHANG, TEN_NGUOINHAN, SDT, DIACHI, PHISHIP, TONGTIEN, TRANGTHAI)\n"
                 + "        VALUES (newid(),dbo.AUTO_MaHD(), NULL, NULL, ?, ?, ?, ?, ?, ?)";
@@ -172,31 +225,30 @@ public class HoaDnRepo {
         return 0; // Trả về giá trị mặc định nếu không có kết quả hoặc có lỗi
     }
 
-   public String updateTrangThaiHoaDon(String trangThai, BigDecimal tongTien, String ma) {
-    String sql = "UPDATE HOADON SET TRANGTHAI = ?, TONGTIEN = ? WHERE ma = ?";
-    try (Connection con = DbConText.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
-        ps.setString(1, trangThai);
-        ps.setBigDecimal(2, tongTien);
-        ps.setString(3, ma);
+    public String updateTrangThaiHoaDon(String trangThai, BigDecimal tongTien, String idHD) {
+        String sql = "UPDATE HOADON SET TRANGTHAI = ?, TONGTIEN = ? WHERE id = ?";
+        try (Connection con = DbConText.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, trangThai);
+            ps.setBigDecimal(2, tongTien);
+            ps.setString(3, idHD);
 
-        int rowsAffected = ps.executeUpdate();
-        if (rowsAffected > 0) {
-            con.commit(); // Commit các thay đổi nếu thành công
-            return "Cập nhật thành công";
-        } else {
-            return "Không có bản ghi được cập nhật";
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected > 0) {
+                con.commit(); // Commit các thay đổi nếu thành công
+                return "Cập nhật thành công";
+            } else {
+                return "Không có bản ghi được cập nhật";
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Lỗi: " + e.getMessage());
+            // Bạn cũng có thể muốn thu hồi giao dịch ở đây nếu có lỗi.
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Lỗi tổng quát: " + e.getMessage());
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
-        System.out.println("Lỗi: " + e.getMessage());
-        // Bạn cũng có thể muốn thu hồi giao dịch ở đây nếu có lỗi.
-    } catch (Exception e) {
-        e.printStackTrace();
-        System.out.println("Lỗi tổng quát: " + e.getMessage());
+        return null;
     }
-    return null;
-}
-
 
     public List<String> selectAllTrangThaiHoaDon() {
         List<String> trangThaiList = new ArrayList<>();
