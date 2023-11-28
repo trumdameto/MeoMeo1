@@ -85,7 +85,9 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
         this.tblGioHangCho.getColumnModel().getColumn(0).setPreferredWidth(40);
         this.tblGioHangCho.getColumnModel().getColumn(1).setPreferredWidth(60);
         this.tblGioHangCho.getColumnModel().getColumn(2).setPreferredWidth(120);
-        this.tblGioHangCho.getColumnModel().getColumn(3).setPreferredWidth(60);
+        this.tblGioHangCho.getColumnModel().getColumn(3).setPreferredWidth(80);
+        this.tblGioHangCho.getColumnModel().getColumn(4).setPreferredWidth(120);
+        this.tblGioHangCho.getColumnModel().getColumn(5).setPreferredWidth(120);
         //Config bảng hóa đơn
         this.tblListHoaDon.getColumnModel().getColumn(0).setPreferredWidth(40);
         this.tblListHoaDon.getColumnModel().getColumn(1).setPreferredWidth(80);
@@ -482,9 +484,14 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
             }
         });
         tblDanhSachSp.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
-        tblDanhSachSp.setColumnSelectionAllowed(true);
-        tblDanhSachSp.setDoubleBuffered(true);
+        tblDanhSachSp.setCellSelectionEnabled(false);
+        tblDanhSachSp.setGridColor(new java.awt.Color(204, 204, 255));
+        tblDanhSachSp.setIntercellSpacing(new java.awt.Dimension(5, 5));
+        tblDanhSachSp.setOpaque(false);
         tblDanhSachSp.setRowHeight(25);
+        tblDanhSachSp.setRowMargin(5);
+        tblDanhSachSp.setRowSelectionAllowed(true);
+        tblDanhSachSp.setSelectionBackground(new java.awt.Color(204, 255, 255));
         tblDanhSachSp.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblDanhSachSpMouseClicked(evt);
@@ -534,9 +541,9 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
                 .addGroup(pnlDSSPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(cboMa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblError, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(8, 8, 8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(48, 48, 48))
+                .addGap(36, 36, 36))
         );
 
         pnlGioHang.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Giỏ Hàng", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 18))); // NOI18N
@@ -572,8 +579,12 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
             }
         });
         tblGioHangCho.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
-        tblGioHangCho.setDoubleBuffered(true);
+        tblGioHangCho.setGridColor(new java.awt.Color(204, 204, 255));
+        tblGioHangCho.setIntercellSpacing(new java.awt.Dimension(5, 5));
+        tblGioHangCho.setOpaque(false);
         tblGioHangCho.setRowHeight(25);
+        tblGioHangCho.setRowMargin(5);
+        tblGioHangCho.setSelectionBackground(new java.awt.Color(204, 255, 255));
         tblGioHangCho.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblGioHangChoMouseClicked(evt);
@@ -636,9 +647,11 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
             }
         });
         tblListHoaDon.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
-        tblListHoaDon.setColumnSelectionAllowed(true);
-        tblListHoaDon.setDoubleBuffered(true);
+        tblListHoaDon.setGridColor(new java.awt.Color(204, 204, 255));
+        tblListHoaDon.setIntercellSpacing(new java.awt.Dimension(5, 5));
+        tblListHoaDon.setOpaque(false);
         tblListHoaDon.setRowHeight(25);
+        tblListHoaDon.setSelectionBackground(new java.awt.Color(204, 255, 255));
         tblListHoaDon.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblListHoaDonMouseClicked(evt);
@@ -1398,7 +1411,7 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
                             tinhVaThemTongTien(5);
                             JOptionPane.showMessageDialog(this, "Bỏ Sản Phẩm Thành Công");
                         }
-                        if (Integer.parseInt(soLuongNhap) < Integer.parseInt(soLuongGioHangGoc)) {
+                        if (Integer.parseInt(soLuongNhap) <= Integer.parseInt(soLuongGioHangGoc)) {
                             if (soLuongNhap != null && !soLuongNhap.isEmpty()) {
                                 if (Integer.parseInt(soLuongNhap) >= 0) {
                                     Integer soLuongCapNhatsp = Integer.parseInt(soLuongSanPham) + Integer.parseInt(soLuongNhap);
