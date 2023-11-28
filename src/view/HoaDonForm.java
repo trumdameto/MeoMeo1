@@ -305,10 +305,7 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
 
     private void showDataGoHang(String id) {
         try {
-//            int row = tblGioHangCho.getSelectedRow();
-//            int tongT = Integer.parseInt(tblGioHangCho.getValueAt(row, 5).toString());
             listHoaDonChiTiet = hdctrepo.getAllHoaDonChiTietByHoaDonID(id);
-
             modelListGioHang.setRowCount(0);
             if (modelListGioHang.getRowCount() < 0) {
                 lblTongTien.setText("0");
@@ -328,7 +325,6 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
 
                     }
                 }
-
             }
         } catch (SQLException ex) {
             Logger.getLogger(HoaDonForm.class
@@ -1531,25 +1527,23 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
 
         if (i >= 0) {
             int check = JOptionPane.showConfirmDialog(this, "Huỷ Hoá Đơn");
-
             if (check == JOptionPane.YES_OPTION) {
                 HoaDon selectedHoaDon = listHoaDon.get(i);
                 xoaSanPhamGio();
                 BigDecimal totalAmount = new BigDecimal(lblTongTien.getText().trim());
 
                 try {
-                    if (hdrepo.updateTrangThaiHoaDon("Huỷ", totalAmount, selectedHoaDon.getId()) != null) {
+                    if (hdrepo.updateTrangThaiHoaDon("Huỷ", totalAmount, selectedHoaDon.getMaHoaDon()) != null) {
                         showDaTAHoaDon();
                         showDataSanPham();
                         lblTongTien.setText("0");
                         lblMaHoaDon.setText(null);
                         txtMaHoaDon2.setText("0");
-
                         JOptionPane.showMessageDialog(this, "Huỷ Thành Công");
                     }
                 } catch (Exception ex) {
                     ex.printStackTrace();
-                    System.out.println("Error: " + ex.getMessage());
+                    System.out.println("Lỗi: " + ex.getMessage());
                 }
             }
         } else {
@@ -1712,14 +1706,11 @@ private void huySuDungDiem(String ma, BigDecimal diem, BigDecimal result) {
 
     //Xóa Sản Phẩm khỏi giỏ
     private void xoaSanPhamGio() {
-        int check = JOptionPane.showConfirmDialog(this, "Hủy Hóa Đơn ?");
-        if (check == JOptionPane.YES_OPTION) {
-            int indexHoaDon = tblListHoaDon.getSelectedRow();
-            HoaDon hoaDon = listHoaDon.get(indexHoaDon);
-            if (hdrepo.deleteAllHoaDonChiTiet(hoaDon.getId()) != null) {
-                showDataSanPham();
-                showDataGoHang(hoaDon.getId());
-            }
+        int indexHoaDon = tblListHoaDon.getSelectedRow();
+        HoaDon hoaDon = listHoaDon.get(indexHoaDon);
+        if (hdrepo.deleteAllHoaDonChiTiet(hoaDon.getId()) != null) {
+            showDataSanPham();
+            showDataGoHang(hoaDon.getId());
         }
     }
 }

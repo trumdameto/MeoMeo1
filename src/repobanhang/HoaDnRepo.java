@@ -172,30 +172,31 @@ public class HoaDnRepo {
         return 0; // Trả về giá trị mặc định nếu không có kết quả hoặc có lỗi
     }
 
-    public String updateTrangThaiHoaDon(String trangThai, BigDecimal tongTien, String idHoaDon) {
-        String sql = "UPDATE HOADON SET TRANGTHAI = ?, TONGTIEN = ? WHERE ID = ?";
-        try (Connection con = DbConText.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, trangThai);
-            ps.setBigDecimal(2, tongTien);
-            ps.setString(3, idHoaDon);
+   public String updateTrangThaiHoaDon(String trangThai, BigDecimal tongTien, String ma) {
+    String sql = "UPDATE HOADON SET TRANGTHAI = ?, TONGTIEN = ? WHERE ma = ?";
+    try (Connection con = DbConText.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setString(1, trangThai);
+        ps.setBigDecimal(2, tongTien);
+        ps.setString(3, ma);
 
-            int rowsAffected = ps.executeUpdate();
-            if (rowsAffected > 0) {
-                con.commit(); // Commit the changes if successful
-                return "Update successful";
-            } else {
-                return "No records updated";
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("Error: " + e.getMessage());
-            // You might also want to roll back the transaction here in case of an error.
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("General error: " + e.getMessage());
+        int rowsAffected = ps.executeUpdate();
+        if (rowsAffected > 0) {
+            con.commit(); // Commit các thay đổi nếu thành công
+            return "Cập nhật thành công";
+        } else {
+            return "Không có bản ghi được cập nhật";
         }
-        return null;
+    } catch (SQLException e) {
+        e.printStackTrace();
+        System.out.println("Lỗi: " + e.getMessage());
+        // Bạn cũng có thể muốn thu hồi giao dịch ở đây nếu có lỗi.
+    } catch (Exception e) {
+        e.printStackTrace();
+        System.out.println("Lỗi tổng quát: " + e.getMessage());
     }
+    return null;
+}
+
 
     public List<String> selectAllTrangThaiHoaDon() {
         List<String> trangThaiList = new ArrayList<>();
