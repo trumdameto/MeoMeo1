@@ -150,7 +150,7 @@ public class LichSuHoaDon extends javax.swing.JFrame {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
         pnlMainQLHD = new javax.swing.JPanel();
-        datechooserFrom = new com.toedter.calendar.JDateChooser();
+        datechooserFrom = new org.netbeans.modules.form.InvalidComponent();
         rdoDaThanhToan = new javax.swing.JRadioButton();
         jLabel2 = new javax.swing.JLabel();
         lblTrang = new javax.swing.JLabel();
@@ -159,7 +159,7 @@ public class LichSuHoaDon extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblHD = new javax.swing.JTable();
-        datechooserTo = new com.toedter.calendar.JDateChooser();
+        datechooserTo = new org.netbeans.modules.form.InvalidComponent();
         jButton3 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblHDCT = new javax.swing.JTable();
@@ -174,10 +174,7 @@ public class LichSuHoaDon extends javax.swing.JFrame {
 
         pnlMainQLHD.setOpaque(false);
 
-        datechooserFrom.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Đến", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
-        datechooserFrom.setForeground(new java.awt.Color(0, 0, 255));
-        datechooserFrom.setDateFormatString("dd-MM-yyyy");
-        datechooserFrom.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        datechooserFrom.null;
 
         buttonGroup1.add(rdoDaThanhToan);
         rdoDaThanhToan.setText("Đã Thanh Toán");
@@ -256,10 +253,7 @@ public class LichSuHoaDon extends javax.swing.JFrame {
             tblHD.getColumnModel().getColumn(8).setResizable(false);
         }
 
-        datechooserTo.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Từ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
-        datechooserTo.setForeground(new java.awt.Color(0, 0, 255));
-        datechooserTo.setDateFormatString("dd-MM-yyyy");
-        datechooserTo.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        datechooserTo.null;
 
         jButton3.setBackground(new java.awt.Color(0, 0, 0));
         jButton3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -373,13 +367,14 @@ public class LichSuHoaDon extends javax.swing.JFrame {
             pnlMainQLHDLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlMainQLHDLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlMainQLHDLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(rdoDaThanhToan)
-                    .addComponent(rdoHuy)
-                    .addComponent(chkShowAll)
-                    .addComponent(jLabel3)
-                    .addComponent(lblErrorSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(pnlMainQLHDLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblErrorSearch, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(pnlMainQLHDLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel2)
+                        .addComponent(rdoDaThanhToan)
+                        .addComponent(rdoHuy)
+                        .addComponent(chkShowAll)
+                        .addComponent(jLabel3)))
                 .addGroup(pnlMainQLHDLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(pnlMainQLHDLayout.createSequentialGroup()
                         .addGap(24, 24, 24)
@@ -510,8 +505,8 @@ public class LichSuHoaDon extends javax.swing.JFrame {
     private javax.swing.JButton btnPrev;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JCheckBox chkShowAll;
-    private com.toedter.calendar.JDateChooser datechooserFrom;
-    private com.toedter.calendar.JDateChooser datechooserTo;
+    private org.netbeans.modules.form.InvalidComponent datechooserFrom;
+    private org.netbeans.modules.form.InvalidComponent datechooserTo;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

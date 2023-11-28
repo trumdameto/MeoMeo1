@@ -19,6 +19,7 @@ import swing.CloseFrame;
 import view.GiayPanel;
 import view.GiayView;
 import view.HoaDonForm;
+import view.HoaDonPanel;
 import view.LichSuHoaDon;
 import view.MenuFrame;
 import view.QLSP;
@@ -59,7 +60,7 @@ public class main extends javax.swing.JFrame implements CloseFrame{
                    }
                 }else if(menuIdex==1){
                   if(subMenuIdex==0){
-                     new HoaDonForm().setVisible(true);
+                     mainForm.showForm(new HoaDonPanel());
                     }else if(subMenuIdex==1){
                         new LichSuHoaDon().setVisible(true);
                     }
@@ -91,22 +92,22 @@ public class main extends javax.swing.JFrame implements CloseFrame{
         jMain.setLayout(jMainLayout);
         jMainLayout.setHorizontalGroup(
             jMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 775, Short.MAX_VALUE)
+            .addGap(0, 1200, Short.MAX_VALUE)
         );
         jMainLayout.setVerticalGroup(
             jMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 455, Short.MAX_VALUE)
+            .addGap(0, 750, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jMain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jMain, javax.swing.GroupLayout.DEFAULT_SIZE, 1200, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jMain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jMain, javax.swing.GroupLayout.DEFAULT_SIZE, 750, Short.MAX_VALUE)
         );
 
         pack();
