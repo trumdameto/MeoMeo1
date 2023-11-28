@@ -437,13 +437,13 @@ public class LichSuHoaDon extends javax.swing.JFrame {
     private void tblHDMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblHDMouseClicked
         int row = tblHD.getSelectedRow();
         int rowHienTai = (soTrang - 1) * soDong + row;
-        if (row > 0) {
+        if (row >= 0) {
             listHoaDon = hdrepo.getAllHoaDon();
             HoaDon h = listHoaDon.get(rowHienTai);
             System.out.println("Index row HD = " + rowHienTai + " ID HD: " + h.getId());
             String idHoaDon = h.getId();
             showDataGioHang(idHoaDon);
-            lblErrorSearch.setText("Không có sản phẩm");
+            lblErrorSearch.setText(null);
         } else {
             lblErrorSearch.setText("Không có sản phẩm");
         }
