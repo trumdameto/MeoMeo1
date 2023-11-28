@@ -84,7 +84,7 @@ public class HoaDnRepo {
                 + " ORDER BY HOADON_MA DESC"; // Sắp xếp theo HOADON_ID tăng dần (ASC)
         try (Connection con = DbConText.getConnection(); PreparedStatement stm = con.prepareStatement(sql);) {
             stm.setString(1, value);
-            ResultSet rs = stm.executeQuery(sql);
+            ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 NhanVien n = new NhanVien(rs.getString("NHANVIEN_ID"), rs.getString("NHANVIEN_MA"), rs.getString("NHANVIEN_TEN"), rs.getBoolean("NHANVIEN_GIOITINH"),
                         rs.getString("NHANVIEN_SDT"), rs.getString("NHANVIEN_DIACHI"),
@@ -107,11 +107,11 @@ public class HoaDnRepo {
 
     // Phương thức với điều kiện WHERE ID_KHACHHANG
     public List<HoaDon> getAllHoaDonByKhachHang(String maKH) {
-        return getHDByEntity("KHACHHANG_MA", maKH);
+        return getHDByEntity("KHACHHANG.MA", maKH);
     }
       // Phương thức với điều kiện WHERE ID_NHANVIEN
     public List<HoaDon> getAllHoaDonByNhanVien(String maNV) {
-        return getHDByEntity("NHANVIEN_MA", maNV);
+        return getHDByEntity("NHANVIEN.MA", maNV);
     }
 
     public HoaDon creatHoaDon(HoaDon h) {
