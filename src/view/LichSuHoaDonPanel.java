@@ -1,3 +1,4 @@
+
 package view;
 
 import Entity.GiayChiTiet;
@@ -18,7 +19,7 @@ import repobanhang.KhachHangRepo;
 import repobanhang.TichDienRepo;
 import repository.JOPane;
 
-public class LichSuHoaDon extends javax.swing.JFrame {
+public class LichSuHoaDonPanel extends javax.swing.JPanel {
 
     DefaultTableModel dtmHD;
     DefaultTableModel dtmHDCT;
@@ -35,8 +36,7 @@ public class LichSuHoaDon extends javax.swing.JFrame {
     List<HoaDonChiTiet> listHoaDonChiTiet = new ArrayList<>();
     List<HoaDon> listHoaDon = new ArrayList<>();
     List<KhachHang> listKhachHang = new ArrayList<>();
-
-    public LichSuHoaDon() {
+    public LichSuHoaDonPanel() {
         initComponents();
         listHoaDon = hdrepo.getAllHoaDon();
         dtmHD = (DefaultTableModel) tblHD.getModel();
@@ -143,12 +143,36 @@ public class LichSuHoaDon extends javax.swing.JFrame {
                 || (chkShowAll.isSelected() || tt.contains(status)
                 && (status.equalsIgnoreCase("Hủy") || status.equalsIgnoreCase("Đã thanh toán") || status.equalsIgnoreCase("Chờ thanh toán")));
     }
+    private void showDataGioHang(String id) {
+        try {
+            listHoaDonChiTiet = hdctrepo.getAllHoaDonChiTietByHoaDonID(id);
+            dtmHDCT.setRowCount(0);
 
+            for (HoaDonChiTiet h : listHoaDonChiTiet) {
+                String g = h.getiDhoaDon();
+
+                // Kiểm tra xem chi tiết hoá đơn có thuộc vào ID hoá đơn cần tìm hay không
+                if (g.equals(id)) {
+                    dtmHDCT.addRow(new Object[]{
+                        tblHDCT.getRowCount() + 1,
+                        h.getGiayChiTiet().getGiay().getMa(),
+                        h.getGiayChiTiet().getGiay().getName(),
+                        h.getSoLuong(),
+                        h.getGia(),
+                        h.tongTien()
+                    });
+
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(HoaDonForm.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        buttonGroup1 = new javax.swing.ButtonGroup();
         pnlMainQLHD = new javax.swing.JPanel();
         datechooserFrom = new com.toedter.calendar.JDateChooser();
         rdoDaThanhToan = new javax.swing.JRadioButton();
@@ -170,8 +194,9 @@ public class LichSuHoaDon extends javax.swing.JFrame {
         rdoHuy = new javax.swing.JRadioButton();
         lblErrorSearch = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 255, 255));
 
+        pnlMainQLHD.setBackground(new java.awt.Color(255, 255, 255));
         pnlMainQLHD.setOpaque(false);
 
         datechooserFrom.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Đến", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
@@ -179,7 +204,6 @@ public class LichSuHoaDon extends javax.swing.JFrame {
         datechooserFrom.setDateFormatString("dd-MM-yyyy");
         datechooserFrom.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
 
-        buttonGroup1.add(rdoDaThanhToan);
         rdoDaThanhToan.setText("Đã Thanh Toán");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
@@ -244,17 +268,6 @@ public class LichSuHoaDon extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(tblHD);
-        if (tblHD.getColumnModel().getColumnCount() > 0) {
-            tblHD.getColumnModel().getColumn(0).setResizable(false);
-            tblHD.getColumnModel().getColumn(1).setResizable(false);
-            tblHD.getColumnModel().getColumn(2).setResizable(false);
-            tblHD.getColumnModel().getColumn(3).setResizable(false);
-            tblHD.getColumnModel().getColumn(4).setResizable(false);
-            tblHD.getColumnModel().getColumn(5).setResizable(false);
-            tblHD.getColumnModel().getColumn(6).setResizable(false);
-            tblHD.getColumnModel().getColumn(7).setResizable(false);
-            tblHD.getColumnModel().getColumn(8).setResizable(false);
-        }
 
         datechooserTo.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Từ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
         datechooserTo.setForeground(new java.awt.Color(0, 0, 255));
@@ -289,7 +302,6 @@ public class LichSuHoaDon extends javax.swing.JFrame {
         tblHDCT.setRowHeight(30);
         jScrollPane2.setViewportView(tblHDCT);
 
-        buttonGroup1.add(chkShowAll);
         chkShowAll.setText("Xem tất cả ?");
 
         txtMaKH.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -318,7 +330,6 @@ public class LichSuHoaDon extends javax.swing.JFrame {
             }
         });
 
-        buttonGroup1.add(rdoHuy);
         rdoHuy.setText("Huỷ ");
 
         lblErrorSearch.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
@@ -354,7 +365,7 @@ public class LichSuHoaDon extends javax.swing.JFrame {
                                 .addComponent(datechooserFrom, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jButton3)
-                                .addGap(0, 36, Short.MAX_VALUE))
+                                .addGap(0, 374, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlMainQLHDLayout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addGap(32, 32, 32)
@@ -406,8 +417,8 @@ public class LichSuHoaDon extends javax.swing.JFrame {
                 .addGap(24, 24, 24))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
@@ -418,18 +429,7 @@ public class LichSuHoaDon extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(pnlMainQLHD, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
-        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void txtMaNVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMaNVActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtMaNVActionPerformed
-
-    private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
-        next();
-    }//GEN-LAST:event_btnNextActionPerformed
 
     private void btnPrevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrevActionPerformed
         prev();
@@ -448,7 +448,6 @@ public class LichSuHoaDon extends javax.swing.JFrame {
         } else {
             lblErrorSearch.setText("Không có sản phẩm");
         }
-
     }//GEN-LAST:event_tblHDMouseClicked
 
     private void txtMaKHKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMaKHKeyReleased
@@ -470,46 +469,18 @@ public class LichSuHoaDon extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_txtMaKHKeyReleased
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Window".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(LichSuHoaDon.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(LichSuHoaDon.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(LichSuHoaDon.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(LichSuHoaDon.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
+    private void txtMaNVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMaNVActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtMaNVActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new LichSuHoaDon().setVisible(true);
-            }
-        });
-    }
+    private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
+        next();
+    }//GEN-LAST:event_btnNextActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNext;
     private javax.swing.JButton btnPrev;
-    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JCheckBox chkShowAll;
     private com.toedter.calendar.JDateChooser datechooserFrom;
     private com.toedter.calendar.JDateChooser datechooserTo;
@@ -529,31 +500,4 @@ public class LichSuHoaDon extends javax.swing.JFrame {
     private javax.swing.JTextField txtMaKH;
     private javax.swing.JTextField txtMaNV;
     // End of variables declaration//GEN-END:variables
-
-    private void showDataGioHang(String id) {
-        try {
-            listHoaDonChiTiet = hdctrepo.getAllHoaDonChiTietByHoaDonID(id);
-            dtmHDCT.setRowCount(0);
-
-            for (HoaDonChiTiet h : listHoaDonChiTiet) {
-                String g = h.getiDhoaDon();
-
-                // Kiểm tra xem chi tiết hoá đơn có thuộc vào ID hoá đơn cần tìm hay không
-                if (g.equals(id)) {
-                    dtmHDCT.addRow(new Object[]{
-                        tblHDCT.getRowCount() + 1,
-                        h.getGiayChiTiet().getGiay().getMa(),
-                        h.getGiayChiTiet().getGiay().getName(),
-                        h.getSoLuong(),
-                        h.getGia(),
-                        h.tongTien()
-                    });
-
-                }
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(HoaDonForm.class
-                    .getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 }
