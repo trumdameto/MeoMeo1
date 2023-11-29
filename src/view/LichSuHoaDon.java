@@ -150,7 +150,6 @@ public class LichSuHoaDon extends javax.swing.JFrame {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
         pnlMainQLHD = new javax.swing.JPanel();
-        datechooserFrom = new com.toedter.calendar.JDateChooser();
         rdoDaThanhToan = new javax.swing.JRadioButton();
         jLabel2 = new javax.swing.JLabel();
         lblTrang = new javax.swing.JLabel();
@@ -159,7 +158,6 @@ public class LichSuHoaDon extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblHD = new javax.swing.JTable();
-        datechooserTo = new com.toedter.calendar.JDateChooser();
         jButton3 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblHDCT = new javax.swing.JTable();
@@ -169,15 +167,12 @@ public class LichSuHoaDon extends javax.swing.JFrame {
         btnNext = new javax.swing.JButton();
         rdoHuy = new javax.swing.JRadioButton();
         lblErrorSearch = new javax.swing.JLabel();
+        jdcTo = new com.toedter.calendar.JDateChooser();
+        jdcFrom = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         pnlMainQLHD.setOpaque(false);
-
-        datechooserFrom.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Đến", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
-        datechooserFrom.setForeground(new java.awt.Color(0, 0, 255));
-        datechooserFrom.setDateFormatString("dd-MM-yyyy");
-        datechooserFrom.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
 
         buttonGroup1.add(rdoDaThanhToan);
         rdoDaThanhToan.setText("Đã Thanh Toán");
@@ -256,11 +251,6 @@ public class LichSuHoaDon extends javax.swing.JFrame {
             tblHD.getColumnModel().getColumn(8).setResizable(false);
         }
 
-        datechooserTo.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Từ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
-        datechooserTo.setForeground(new java.awt.Color(0, 0, 255));
-        datechooserTo.setDateFormatString("dd-MM-yyyy");
-        datechooserTo.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-
         jButton3.setBackground(new java.awt.Color(0, 0, 0));
         jButton3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButton3.setForeground(new java.awt.Color(255, 255, 255));
@@ -324,6 +314,12 @@ public class LichSuHoaDon extends javax.swing.JFrame {
         lblErrorSearch.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
         lblErrorSearch.setForeground(new java.awt.Color(255, 51, 51));
 
+        jdcTo.setBorder(javax.swing.BorderFactory.createTitledBorder("To"));
+        jdcTo.setDateFormatString("dd-MM-yyyy");
+
+        jdcFrom.setBorder(javax.swing.BorderFactory.createTitledBorder("from"));
+        jdcFrom.setDateFormatString("dd-MM-yyyy");
+
         javax.swing.GroupLayout pnlMainQLHDLayout = new javax.swing.GroupLayout(pnlMainQLHD);
         pnlMainQLHD.setLayout(pnlMainQLHDLayout);
         pnlMainQLHDLayout.setHorizontalGroup(
@@ -348,25 +344,25 @@ public class LichSuHoaDon extends javax.swing.JFrame {
                                 .addComponent(txtMaNV, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(txtMaKH, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(datechooserTo, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(datechooserFrom, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButton3)
-                                .addGap(0, 36, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlMainQLHDLayout.createSequentialGroup()
+                                .addComponent(jdcTo, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE))
+                            .addGroup(pnlMainQLHDLayout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addGap(32, 32, 32)
-                                .addComponent(lblErrorSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(chkShowAll, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(lblErrorSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(rdoHuy)
+                        .addGroup(pnlMainQLHDLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(jdcFrom, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(rdoDaThanhToan)))
+                        .addGroup(pnlMainQLHDLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlMainQLHDLayout.createSequentialGroup()
+                                .addComponent(chkShowAll, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(rdoHuy)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(rdoDaThanhToan))
+                            .addComponent(jButton3))))
                 .addContainerGap())
         );
         pnlMainQLHDLayout.setVerticalGroup(
@@ -381,17 +377,19 @@ public class LichSuHoaDon extends javax.swing.JFrame {
                         .addComponent(rdoHuy)
                         .addComponent(chkShowAll)
                         .addComponent(jLabel3)))
-                .addGroup(pnlMainQLHDLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(pnlMainQLHDLayout.createSequentialGroup()
+                .addGroup(pnlMainQLHDLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlMainQLHDLayout.createSequentialGroup()
                         .addGap(24, 24, 24)
                         .addGroup(pnlMainQLHDLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txtMaNV)
-                            .addComponent(txtMaKH)
-                            .addComponent(datechooserFrom, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 53, Short.MAX_VALUE)
-                            .addComponent(datechooserTo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(pnlMainQLHDLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtMaNV, javax.swing.GroupLayout.DEFAULT_SIZE, 53, Short.MAX_VALUE)
+                            .addComponent(txtMaKH)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlMainQLHDLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(pnlMainQLHDLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlMainQLHDLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jdcTo, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jdcFrom, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(9, 9, 9)
@@ -511,14 +509,14 @@ public class LichSuHoaDon extends javax.swing.JFrame {
     private javax.swing.JButton btnPrev;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JCheckBox chkShowAll;
-    private com.toedter.calendar.JDateChooser datechooserFrom;
-    private com.toedter.calendar.JDateChooser datechooserTo;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private com.toedter.calendar.JDateChooser jdcFrom;
+    private com.toedter.calendar.JDateChooser jdcTo;
     private javax.swing.JLabel lblErrorSearch;
     private javax.swing.JLabel lblTrang;
     private javax.swing.JPanel pnlMainQLHD;

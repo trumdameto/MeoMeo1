@@ -19,10 +19,11 @@ import swing.CloseFrame;
 import view.GiayPanel;
 import view.GiayView;
 import view.HoaDonForm;
+import view.HoaDonPanel;
 import view.LichSuHoaDon;
-import view.LichSuHoaDonPanel;
 import view.MenuFrame;
 import view.QLSP;
+import view.QuanLyHD;
 import view.QuanLySP;
 
 
@@ -60,9 +61,9 @@ public class main extends javax.swing.JFrame implements CloseFrame{
                    }
                 }else if(menuIdex==1){
                   if(subMenuIdex==0){
-                     new HoaDonForm().setVisible(true);
+                     mainForm.showForm(new HoaDonPanel());
                     }else if(subMenuIdex==1){
-                        mainForm.showForm(new LichSuHoaDonPanel());
+                        mainForm.showForm(new QuanLyHD());
                     }
                      
                 }
@@ -82,17 +83,17 @@ public class main extends javax.swing.JFrame implements CloseFrame{
         jMain = new javax.swing.JLayeredPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1200, 690));
+        setPreferredSize(new java.awt.Dimension(1500, 750));
 
         jMain.setBackground(new java.awt.Color(255, 255, 255));
         jMain.setOpaque(true);
-        jMain.setPreferredSize(new java.awt.Dimension(700, 400));
+        jMain.setPreferredSize(new java.awt.Dimension(1500, 750));
 
         javax.swing.GroupLayout jMainLayout = new javax.swing.GroupLayout(jMain);
         jMain.setLayout(jMainLayout);
         jMainLayout.setHorizontalGroup(
             jMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1200, Short.MAX_VALUE)
+            .addGap(0, 1500, Short.MAX_VALUE)
         );
         jMainLayout.setVerticalGroup(
             jMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -103,14 +104,15 @@ public class main extends javax.swing.JFrame implements CloseFrame{
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jMain, javax.swing.GroupLayout.DEFAULT_SIZE, 1200, Short.MAX_VALUE)
+            .addComponent(jMain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jMain, javax.swing.GroupLayout.DEFAULT_SIZE, 750, Short.MAX_VALUE)
+            .addComponent(jMain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     /**
