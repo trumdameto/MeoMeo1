@@ -59,7 +59,7 @@ public class QuanLyHD extends javax.swing.JPanel {
             soTrang--;
             fillTable();
         } else {
-             JOPane.showMessageDialog(this, "Đã ở trang đầu");
+            JOPane.showMessageDialog(this, "Đã ở trang đầu");
         }
     }
 
@@ -85,7 +85,6 @@ public class QuanLyHD extends javax.swing.JPanel {
         lblTrang.setText("Trang " + soTrang + "/" + maxPage);
         configTable();
     }
-
 
     private void showDataGioHang(String id) {
         try {
@@ -293,7 +292,7 @@ public class QuanLyHD extends javax.swing.JPanel {
         int rowHienTai = (soTrang - 1) * soDong + row;
         if (row >= 0) {
             listHoaDon = hdrepo.getAllHoaDon();
-            HoaDon h = listHoaDon.get(rowHienTai);
+            HoaDon h = paidHoaDon.get(rowHienTai);
             System.out.println("Index row HD = " + rowHienTai + " ID HD: " + h.getId());
             String idHoaDon = h.getId();
             showDataGioHang(idHoaDon);
@@ -304,17 +303,18 @@ public class QuanLyHD extends javax.swing.JPanel {
     }//GEN-LAST:event_tblHDMouseClicked
 
     private void txtMaKHKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMaKHKeyReleased
-
         String maKH = txtMaKH.getText().trim();
         lblErrorSearch.setText("");
 
         if (!maKH.isEmpty()) {
-            List<HoaDon> hd = hdrepo.getAllHoaDonByKhachHang(maKH);
+            // Thay đổi phương thức để lấy danh sách hóa đơn đã thanh toán theo mã khách hàng
+            List<HoaDon> hd = hdrepo.getAllPaidHoaDonByKhachHang(maKH);
 
             if (hd != null && !hd.isEmpty()) {
+                paidHoaDon = hd;
                 fillTable();
             } else {
-                lblErrorSearch.setText("Không tìm thấy hóa đơn");
+                lblErrorSearch.setText("Không tìm thấy hóa đơn đã thanh toán cho mã khách hàng này");
             }
         }
     }//GEN-LAST:event_txtMaKHKeyReleased

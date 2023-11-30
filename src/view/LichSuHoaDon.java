@@ -24,11 +24,12 @@ public class LichSuHoaDon extends javax.swing.JFrame {
 
     List<HoaDonChiTiet> listHoaDonChiTiet = new ArrayList<>();
     List<HoaDon> listHoaDon = new ArrayList<>();
-    List<HoaDon> paidHoaDon = hdrepo.getAllHoaDonByTrangThai("Đã thanh toán");
+    List<HoaDon> paidHoaDon = new ArrayList<>();
 
     public LichSuHoaDon() {
         initComponents();
         listHoaDon = hdrepo.getAllHoaDon();
+        paidHoaDon = hdrepo.getAllHoaDonByTrangThai("Đã thanh toán");
         dtmHD = (DefaultTableModel) tblHD.getModel();
         dtmHD.setRowCount(soDong);
         dtmHDCT = (DefaultTableModel) tblHDCT.getModel();
@@ -59,7 +60,7 @@ public class LichSuHoaDon extends javax.swing.JFrame {
             soTrang--;
             fillTable();
         } else {
-             JOPane.showMessageDialog(this, "Đã ở trang đầu");
+            JOPane.showMessageDialog(this, "Đã ở trang đầu");
         }
     }
 
@@ -90,7 +91,6 @@ public class LichSuHoaDon extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        buttonGroup1 = new javax.swing.ButtonGroup();
         pnlMainQLHD = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         lblTrang = new javax.swing.JLabel();
@@ -220,6 +220,11 @@ public class LichSuHoaDon extends javax.swing.JFrame {
 
         txtMaNV.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         txtMaNV.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Nhập mã NV", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
+        txtMaNV.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtMaNVKeyReleased(evt);
+            }
+        });
 
         btnNext.setBackground(new java.awt.Color(0, 0, 0));
         btnNext.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -349,7 +354,6 @@ public class LichSuHoaDon extends javax.swing.JFrame {
         } else {
             lblErrorSearch.setText("Không có sản phẩm");
         }
-
     }//GEN-LAST:event_tblHDMouseClicked
 
     private void txtMaKHKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMaKHKeyReleased
@@ -358,19 +362,40 @@ public class LichSuHoaDon extends javax.swing.JFrame {
         lblErrorSearch.setText("");
 
         if (!maKH.isEmpty()) {
-            List<HoaDon> hd = hdrepo.getAllHoaDonByKhachHang(maKH);
+            List<HoaDon> hd = hdrepo.getAllPaidHoaDonByKhachHang(maKH);
 
             if (hd != null && !hd.isEmpty()) {
+                paidHoaDon = hd;
                 fillTable();
             } else {
                 lblErrorSearch.setText("Không tìm thấy hóa đơn");
             }
+        } else {
+            paidHoaDon = hdrepo.getAllHoaDonByTrangThai("Đã thanh toán");
+            fillTable();
         }
     }//GEN-LAST:event_txtMaKHKeyReleased
 
-    /**
-     * @param args the command line arguments
-     */
+    private void txtMaNVKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMaNVKeyReleased
+        
+        String maNV = txtMaNV.getText().trim();
+        lblErrorSearch.setText("");
+
+        if (!maNV.isEmpty()) {
+            List<HoaDon> hd = hdrepo.getAllPaidHoaDonByKhachHang(maNV);
+
+            if (hd != null && !hd.isEmpty()) {
+                paidHoaDon = hd;
+                fillTable();
+            } else {
+                lblErrorSearch.setText("Không tìm thấy hóa đơn");
+            }
+        } else {
+            paidHoaDon = hdrepo.getAllHoaDonByTrangThai("Đã thanh toán");
+            fillTable();
+        }
+    }//GEN-LAST:event_txtMaNVKeyReleased
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -407,7 +432,6 @@ public class LichSuHoaDon extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNext;
     private javax.swing.JButton btnPrev;
-    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
