@@ -248,6 +248,8 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
                 v.add(g.getGiay().getMa());
                 v.add(g.getGiay().getName());
                 v.add(g.getHang().getName());
+                v.add(g.getKieuDang().getName());
+                v.add(g.getDanhMuc().getName());
                 v.add(g.getMauSac().getName());
                 v.add(g.getKichCo().getSize());
                 v.add(g.getSoLuong());
@@ -1521,12 +1523,12 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
             int check = JOptionPane.showConfirmDialog(this, "Huỷ Hoá Đơn");
             if (check == JOptionPane.YES_OPTION) {
                 HoaDon selectedHoaDon = listHoaDon.get(i);
+                String maHD = lblMaHoaDon.getText().trim();
 //                System.out.println("ID HD: "+selectedHoaDon.getId());
                 xoaSanPhamGio();
                 BigDecimal totalAmount = new BigDecimal(lblTongTien.getText().trim());
-
                 try {
-                    if (hdrepo.updateTrangThaiHoaDon("Huỷ", totalAmount, selectedHoaDon.getId()) != null) {
+                    if (hdrepo.updateTrangThaiHoaDon("Huỷ", totalAmount, maHD) != null) {
                         showDaTAHoaDon();
                         showDataSanPham();
                         lblTongTien.setText("0");

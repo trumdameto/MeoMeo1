@@ -1,4 +1,3 @@
-
 package view;
 
 import Entity.GiayChiTiet;
@@ -38,6 +37,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import repobanhang.TichDienRepo;
+import repository.JOPane;
 
 public class HoaDonPanel extends javax.swing.JPanel implements Runnable, ThreadFactory {
 
@@ -60,6 +60,7 @@ public class HoaDonPanel extends javax.swing.JPanel implements Runnable, ThreadF
     DefaultTableModel model;
     DefaultTableModel modelListGioHang;
     DefaultTableModel modelListHoaDon;
+
     public HoaDonPanel() {
         initComponents();
         initWebcam();
@@ -79,7 +80,8 @@ public class HoaDonPanel extends javax.swing.JPanel implements Runnable, ThreadF
         comBoMaGiay();
         this.configTblCol();
     }
-     private void configTblCol() {
+
+    private void configTblCol() {
         //Config bảng giỏ hàng
         this.tblGioHangCho.getColumnModel().getColumn(0).setPreferredWidth(40);
         this.tblGioHangCho.getColumnModel().getColumn(1).setPreferredWidth(60);
@@ -89,12 +91,12 @@ public class HoaDonPanel extends javax.swing.JPanel implements Runnable, ThreadF
         this.tblGioHangCho.getColumnModel().getColumn(5).setPreferredWidth(120);
         //Config bảng hóa đơn
         this.tblListHoaDon.getColumnModel().getColumn(0).setPreferredWidth(40);
-        this.tblListHoaDon.getColumnModel().getColumn(1).setPreferredWidth(80);
-        this.tblListHoaDon.getColumnModel().getColumn(2).setPreferredWidth(90);
-        this.tblListHoaDon.getColumnModel().getColumn(3).setPreferredWidth(60);
+        this.tblListHoaDon.getColumnModel().getColumn(1).setPreferredWidth(75);
+        this.tblListHoaDon.getColumnModel().getColumn(2).setPreferredWidth(75);
+        this.tblListHoaDon.getColumnModel().getColumn(3).setPreferredWidth(75);
         this.tblListHoaDon.getColumnModel().getColumn(4).setPreferredWidth(110);
         //Config bảng danh sách sản phẩm
-        this.tblDanhSachSp.getColumnModel().getColumn(0).setPreferredWidth(50);
+        this.tblDanhSachSp.getColumnModel().getColumn(0).setPreferredWidth(70);
         this.tblDanhSachSp.getColumnModel().getColumn(1).setPreferredWidth(120);
         this.tblDanhSachSp.getColumnModel().getColumn(2).setPreferredWidth(80);
         this.tblDanhSachSp.getColumnModel().getColumn(3).setPreferredWidth(80);
@@ -102,7 +104,7 @@ public class HoaDonPanel extends javax.swing.JPanel implements Runnable, ThreadF
         this.tblDanhSachSp.getColumnModel().getColumn(5).setPreferredWidth(80);
         this.tblDanhSachSp.getColumnModel().getColumn(6).setPreferredWidth(50);
         this.tblDanhSachSp.getColumnModel().getColumn(7).setPreferredWidth(70);
-        this.tblDanhSachSp.getColumnModel().getColumn(8).setPreferredWidth(80);
+        this.tblDanhSachSp.getColumnModel().getColumn(8).setPreferredWidth(100);
         this.tblDanhSachSp.getColumnModel().getColumn(9).setPreferredWidth(80);
 
     }
@@ -388,6 +390,7 @@ public class HoaDonPanel extends javax.swing.JPanel implements Runnable, ThreadF
         gct.UpdateSo(listGiayChiTiet.get(i).getiD(), updatedQuantity);
 
     }
+
     private void huySuDungDiem(String ma, BigDecimal diem, BigDecimal result) {
         int check = JOptionPane.showConfirmDialog(this, "Hủy Sử Dụng Điểm");
         if (check == JOptionPane.YES_OPTION) {
@@ -901,7 +904,7 @@ public class HoaDonPanel extends javax.swing.JPanel implements Runnable, ThreadF
         tblDanhSachSp.setIntercellSpacing(new java.awt.Dimension(5, 5));
         tblDanhSachSp.setOpaque(false);
         tblDanhSachSp.setRowHeight(25);
-        tblDanhSachSp.setSelectionBackground(new java.awt.Color(204, 204, 204));
+        tblDanhSachSp.setSelectionBackground(new java.awt.Color(51, 51, 51));
         tblDanhSachSp.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblDanhSachSpMouseClicked(evt);
@@ -979,7 +982,7 @@ public class HoaDonPanel extends javax.swing.JPanel implements Runnable, ThreadF
         tblGioHangCho.setIntercellSpacing(new java.awt.Dimension(5, 5));
         tblGioHangCho.setOpaque(false);
         tblGioHangCho.setRowHeight(25);
-        tblGioHangCho.setSelectionBackground(new java.awt.Color(204, 204, 204));
+        tblGioHangCho.setSelectionBackground(new java.awt.Color(51, 51, 51));
         tblGioHangCho.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblGioHangChoMouseClicked(evt);
@@ -1038,7 +1041,7 @@ public class HoaDonPanel extends javax.swing.JPanel implements Runnable, ThreadF
         tblListHoaDon.setIntercellSpacing(new java.awt.Dimension(5, 5));
         tblListHoaDon.setOpaque(false);
         tblListHoaDon.setRowHeight(25);
-        tblListHoaDon.setSelectionBackground(new java.awt.Color(204, 204, 204));
+        tblListHoaDon.setSelectionBackground(new java.awt.Color(51, 51, 51));
         tblListHoaDon.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblListHoaDonMouseClicked(evt);
@@ -1215,12 +1218,13 @@ public class HoaDonPanel extends javax.swing.JPanel implements Runnable, ThreadF
             int check = JOptionPane.showConfirmDialog(this, "Huỷ Hoá Đơn");
             if (check == JOptionPane.YES_OPTION) {
                 HoaDon selectedHoaDon = listHoaDon.get(i);
+                String maHD = lblMaHoaDon.getText().trim();
                 //                System.out.println("ID HD: "+selectedHoaDon.getId());
                 xoaSanPhamGio();
                 BigDecimal totalAmount = new BigDecimal(lblTongTien.getText().trim());
 
                 try {
-                    if (hdrepo.updateTrangThaiHoaDon("Huỷ", totalAmount, selectedHoaDon.getId()) != null) {
+                    if (hdrepo.updateTrangThaiHoaDon("Huỷ", totalAmount, maHD) != null) {
                         showDaTAHoaDon();
                         showDataSanPham();
                         lblTongTien.setText("0");
@@ -1430,17 +1434,17 @@ public class HoaDonPanel extends javax.swing.JPanel implements Runnable, ThreadF
         if (evt.getClickCount() == 2) {
             int i = tblGioHangCho.getSelectedRow();
             int index = tblListHoaDon.getSelectedRow();
-            int messegertype = JOptionPane.QUESTION_MESSAGE;
             String[] obtion = {"Bỏ sản phẩm", "Huỷ"};
             HoaDonChiTiet h = listHoaDonChiTiet.get(i);
             String soLuongSanPham = hdctrepo.selectSoLuongSanPham(h.getGiayChiTiet().getiD());
             HoaDon hoaDon = listHoaDon.get(index);
-
-            int code = JOptionPane.showOptionDialog(this, "BẠN MUỐN LÀM GÌ ?", "LỰA CHỌN", 0, messegertype, null, obtion, "Số Lượng");
+            
+            
+            int code = JOPane.showOptionDialog(this, "Bạn muốn làm gì ?", obtion, "Số lượng");
             switch (code) {
                 case 0 -> {
                     String soLuongGioHangGoc = tblGioHangCho.getValueAt(i, 3).toString();
-                    String soLuongNhap = JOptionPane.showInputDialog("Nhập Số Lượng Muốn Bỏ");
+                    String soLuongNhap = JOPane.showInputDialog(this, "Nhập số lượng muốn bỏ");
 
                     try {
                         if (Integer.parseInt(soLuongNhap) == Integer.parseInt(soLuongGioHangGoc)) {

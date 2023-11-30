@@ -109,9 +109,13 @@ public class HoaDnRepo {
     public List<HoaDon> getAllHoaDonByKhachHang(String maKH) {
         return getHDByEntity("KHACHHANG.MA", maKH);
     }
-      // Phương thức với điều kiện WHERE ID_NHANVIEN
+    // Phương thức với điều kiện WHERE ID_NHANVIEN
+
     public List<HoaDon> getAllHoaDonByNhanVien(String maNV) {
         return getHDByEntity("NHANVIEN.MA", maNV);
+    }
+    public List<HoaDon> getAllHoaDonByTrangThai(String tt) {
+        return getHDByEntity("HOADON.TRANGTHAI", tt);
     }
 
     public HoaDon creatHoaDon(HoaDon h) {
@@ -226,7 +230,7 @@ public class HoaDnRepo {
     }
 
     public String updateTrangThaiHoaDon(String trangThai, BigDecimal tongTien, String idHD) {
-        String sql = "UPDATE HOADON SET TRANGTHAI = ?, TONGTIEN = ? WHERE id = ?";
+        String sql = "UPDATE HOADON SET TRANGTHAI = ?, TONGTIEN = ? WHERE MA= ?";
         try (Connection con = DbConText.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, trangThai);
             ps.setBigDecimal(2, tongTien);
@@ -253,15 +257,16 @@ public class HoaDnRepo {
     public List<String> selectAllTrangThaiHoaDon() {
         List<String> trangThaiList = new ArrayList<>();
         String sql = "SELECT TRANGTHAI FROM HOADON";
-        try (Connection con = DbConText.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
-            ResultSet rs = ps.executeQuery();
+
+        try (Connection con = DbConText.getConnection(); PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 trangThaiList.add(rs.getString("TRANGTHAI"));
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
+            System.err.println("Lỗi khi chọn Trạng Thái: " + e.getMessage());
             e.printStackTrace();
-            System.out.println("Lỗi khi chọn Trạng Thái");
         }
+
         return trangThaiList;
     }
 
