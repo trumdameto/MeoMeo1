@@ -91,21 +91,20 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
         //Config bảng hóa đơn
         this.tblListHoaDon.getColumnModel().getColumn(0).setPreferredWidth(40);
         this.tblListHoaDon.getColumnModel().getColumn(1).setPreferredWidth(80);
-        this.tblListHoaDon.getColumnModel().getColumn(2).setPreferredWidth(90);
+        this.tblListHoaDon.getColumnModel().getColumn(2).setPreferredWidth(190);
         this.tblListHoaDon.getColumnModel().getColumn(3).setPreferredWidth(60);
         this.tblListHoaDon.getColumnModel().getColumn(4).setPreferredWidth(110);
         //Config bảng danh sách sản phẩm
-        this.tblDanhSachSp.getColumnModel().getColumn(0).setPreferredWidth(50);
+        this.tblDanhSachSp.getColumnModel().getColumn(0).setPreferredWidth(60);
         this.tblDanhSachSp.getColumnModel().getColumn(1).setPreferredWidth(120);
-        this.tblDanhSachSp.getColumnModel().getColumn(2).setPreferredWidth(80);
-        this.tblDanhSachSp.getColumnModel().getColumn(3).setPreferredWidth(80);
+        this.tblDanhSachSp.getColumnModel().getColumn(2).setPreferredWidth(75);
+        this.tblDanhSachSp.getColumnModel().getColumn(3).setPreferredWidth(75);
         this.tblDanhSachSp.getColumnModel().getColumn(4).setPreferredWidth(80);
-        this.tblDanhSachSp.getColumnModel().getColumn(5).setPreferredWidth(80);
-        this.tblDanhSachSp.getColumnModel().getColumn(6).setPreferredWidth(50);
+        this.tblDanhSachSp.getColumnModel().getColumn(5).setPreferredWidth(70);
+        this.tblDanhSachSp.getColumnModel().getColumn(6).setPreferredWidth(40);
         this.tblDanhSachSp.getColumnModel().getColumn(7).setPreferredWidth(70);
-        this.tblDanhSachSp.getColumnModel().getColumn(8).setPreferredWidth(80);
+        this.tblDanhSachSp.getColumnModel().getColumn(8).setPreferredWidth(90);
         this.tblDanhSachSp.getColumnModel().getColumn(9).setPreferredWidth(80);
-
     }
 
     private void initWebcam() {
@@ -469,7 +468,7 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
                 {null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Mã", "Tên", "Hãng", "Kiểu dáng", "Danh mục", "Màu sắc", "Kích cỡ", "Số lượng", "Đơn giá", "Trạng thái"
+                "Mã", "Tên", "Hãng", "Kiểu dáng", "Danh mục", "Màu sắc", "Size", "Số lượng", "Đơn giá", "Trạng thái"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -481,11 +480,12 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
             }
         });
         tblDanhSachSp.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
-        tblDanhSachSp.setGridColor(new java.awt.Color(204, 204, 255));
+        tblDanhSachSp.setGridColor(new java.awt.Color(51, 51, 51));
         tblDanhSachSp.setIntercellSpacing(new java.awt.Dimension(5, 5));
         tblDanhSachSp.setOpaque(false);
         tblDanhSachSp.setRowHeight(25);
-        tblDanhSachSp.setSelectionBackground(new java.awt.Color(204, 255, 255));
+        tblDanhSachSp.setSelectionBackground(new java.awt.Color(51, 51, 51));
+        tblDanhSachSp.setSelectionForeground(new java.awt.Color(255, 255, 255));
         tblDanhSachSp.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblDanhSachSpMouseClicked(evt);
@@ -572,11 +572,12 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
             }
         });
         tblGioHangCho.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
-        tblGioHangCho.setGridColor(new java.awt.Color(204, 204, 255));
+        tblGioHangCho.setGridColor(new java.awt.Color(51, 51, 51));
         tblGioHangCho.setIntercellSpacing(new java.awt.Dimension(5, 5));
         tblGioHangCho.setOpaque(false);
         tblGioHangCho.setRowHeight(25);
-        tblGioHangCho.setSelectionBackground(new java.awt.Color(204, 255, 255));
+        tblGioHangCho.setSelectionBackground(new java.awt.Color(51, 51, 51));
+        tblGioHangCho.setSelectionForeground(new java.awt.Color(255, 255, 255));
         tblGioHangCho.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblGioHangChoMouseClicked(evt);
@@ -639,11 +640,12 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
             }
         });
         tblListHoaDon.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
-        tblListHoaDon.setGridColor(new java.awt.Color(204, 204, 255));
+        tblListHoaDon.setGridColor(new java.awt.Color(51, 51, 51));
         tblListHoaDon.setIntercellSpacing(new java.awt.Dimension(5, 5));
         tblListHoaDon.setOpaque(false);
         tblListHoaDon.setRowHeight(25);
-        tblListHoaDon.setSelectionBackground(new java.awt.Color(204, 255, 255));
+        tblListHoaDon.setSelectionBackground(new java.awt.Color(51, 51, 51));
+        tblListHoaDon.setSelectionForeground(new java.awt.Color(255, 255, 255));
         tblListHoaDon.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblListHoaDonMouseClicked(evt);
@@ -1292,13 +1294,14 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
                 String trangThai = "Đã thanh toán";
                 String maHD = tblListHoaDon.getValueAt(tblListHoaDon.getSelectedRow(), 1).toString();
                 BigDecimal tongT = new BigDecimal(lblTongTien.getText().trim());
+                String maNV = lblNhanVien.getText().trim();
                 listKhachHang = khrp.getKhachHang();
                 for (KhachHang k : listKhachHang) {
                     if (k.getMa().equalsIgnoreCase(txtMaKhach.getText().trim())) {
                         String idKH = k.getId();
                         BigDecimal diemTTXong = (new BigDecimal(lblKiemTraDiem.getText().trim()).add(new BigDecimal(10000)));
                         tdrp.tichDiem(diemTTXong, k.getId());
-                        int ok = hdrepo.updateHDByMa(trangThai, tienKH, tienThua, cboHinhThucTT.getSelectedItem().toString(), idKH, tongT, maHD);
+                        int ok = hdrepo.updateHDByMa(trangThai, tienKH, tienThua, cboHinhThucTT.getSelectedItem().toString(), idKH, tongT,maNV, maHD);
                         if (ok == 0) {
                             showDaTAHoaDon();
                             resetThanhToan();

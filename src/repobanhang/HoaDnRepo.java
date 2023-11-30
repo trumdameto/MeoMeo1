@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import util.DbConText;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 
 /**
  *
@@ -39,7 +40,6 @@ public class HoaDnRepo {
                 + " LEFT JOIN KHACHHANG ON HOADON.ID_KHACHHANG = KHACHHANG.ID"
                 + " ORDER BY HOADON_MA DESC"; // Sắp xếp theo HOADON_ID tăng dần (ASC)
         try (Connection con = DbConText.getConnection(); Statement stm = con.createStatement();) {
-
             ResultSet rs = stm.executeQuery(sql);
             while (rs.next()) {
                 NhanVien n = new NhanVien(rs.getString("NHANVIEN_ID"), rs.getString("NHANVIEN_MA"), rs.getString("NHANVIEN_TEN"), rs.getBoolean("NHANVIEN_GIOITINH"),
@@ -48,16 +48,18 @@ public class HoaDnRepo {
                         rs.getString("NHANVIEN_TRANGTHAI"));
                 KhachHang k = new KhachHang(rs.getString("KHACHHANG_ID"), rs.getString("KHACHHANG_MA"), rs.getString("KHACHHANG_TEN"), rs.getBoolean("KHACHHANG_GIOITINH"),
                         rs.getString("KHACHHANG_SDT"), rs.getString("KHACHHANG_DIACHI"), rs.getString("ID_TICHDIEM"));
-                listkd.add(new HoaDon(rs.getString("HOADON_ID"), rs.getString("HOADON_MA"), n, k, rs.getDate("HOADON_NGAYTAO"),
+                listkd.add(new HoaDon(rs.getString("HOADON_ID"), rs.getString("HOADON_MA"), n, k,
+//                        new SimpleDateFormat("yyyy-MM-dd hh:mm:ss aa").format(rs.getTimestamp("HOADON_NGAYTAO")),
+                        rs.getTimestamp("HOADON_NGAYTAO"),
                         rs.getString("HOADON_TEN_NGUOINHAN"), rs.getString("HOADON_SDT"), rs.getString("HOADON_DIACHI"),
-                        rs.getBigDecimal("HOADON_PHISHIP"), rs.getBigDecimal("HOADON_TONGTIEN"), rs.getString("HOADON_TRANGTHAI"), rs.getBigDecimal("HOADON_TIENKHACHDUA"),
-                        rs.getBigDecimal("HOADON_TIENTHUA"), rs.getString("HOADON_HINHTHUCTHANHTOAN")));
+                        rs.getBigDecimal("HOADON_PHISHIP"), rs.getBigDecimal("HOADON_TONGTIEN"), rs.getString("HOADON_TRANGTHAI"),
+                        rs.getBigDecimal("HOADON_TIENKHACHDUA"), rs.getBigDecimal("HOADON_TIENTHUA"), rs.getString("HOADON_HINHTHUCTHANHTOAN")));
 
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return listkd;
     }
 
@@ -181,8 +183,8 @@ public class HoaDnRepo {
         return null;
     }
 
-    public Integer updateHDByMa(String tt, BigDecimal tienKH, BigDecimal tienThua, String hinhThuc, String KH, BigDecimal tongT, String maHD) {
-        String sql = "update HOADON set TRANGTHAI = ?,TIENKHACHDUA=?,TIENTHUA=?,HINHTHUCTHANHTOAN=?,ID_KHACHHANG=?,TONGTIEN=?  where MA=?";
+    public Integer updateHDByMa(String tt, BigDecimal tienKH, BigDecimal tienThua, String hinhThuc, String KH, BigDecimal tongT, String maNV,String maHD) {
+        String sql = "update HOADON set TRANGTHAI = ?,TIENKHACHDUA=?,TIENTHUA=?,HINHTHUCTHANHTOAN=?,ID_KHACHHANG=?,TONGTIEN=?,ID_NHANVIEN=?  where MA=?";
         try (Connection con = DbConText.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setObject(1, tt);
             ps.setObject(2, tienKH);
@@ -190,7 +192,8 @@ public class HoaDnRepo {
             ps.setObject(4, hinhThuc);
             ps.setObject(5, KH);
             ps.setObject(6, tongT);
-            ps.setObject(7, maHD);
+            ps.setObject(7, maNV);
+            ps.setObject(8, maHD);
             ps.executeUpdate();
             return 0;
         } catch (Exception e) {
@@ -277,6 +280,7 @@ public class HoaDnRepo {
     public List<HoaDon> getAllPaidHoaDonByKhachHang(String maKH) {
         return getHDByEntityAndTrangThai("KHACHHANG.MA", maKH, "Đã thanh toán");
     }
+
     public List<HoaDon> getAllPaidHoaDonByNhanVien(String maNV) {
         return getHDByEntityAndTrangThai("NHANVIEN.MA", maNV, "Đã thanh toán");
     }

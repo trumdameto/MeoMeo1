@@ -24,9 +24,6 @@ public class HoaDonChiTiet {
         this.trangThai = trangThai;
     }
 
-    
-    
-
     public HoaDonChiTiet(String id, GiayChiTiet giayChiTiet, BigDecimal gia, int soLuong, String trangThai) {
         this.id = id;
         this.giayChiTiet = giayChiTiet;

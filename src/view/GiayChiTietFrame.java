@@ -331,7 +331,6 @@ public class GiayChiTietFrame extends javax.swing.JFrame {
 
     private void showAnh(String icon) {
         // Chuyển ImageIcon thành Image
-        System.out.println(icon);
         ImageIcon imageIcon = new ImageIcon(icon);
         Image newImage = imageIcon.getImage().getScaledInstance(lblAnh.getWidth(), lblAnh.getHeight(), Image.SCALE_SMOOTH);
         ImageIcon newIcon = new ImageIcon(newImage);
