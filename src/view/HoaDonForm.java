@@ -37,6 +37,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import repobanhang.TichDienRepo;
+import repository.JOPane;
 
 public final class HoaDonForm extends javax.swing.JFrame implements Runnable, ThreadFactory {
 
@@ -153,75 +154,72 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
                         indexDanhSachSp = listGiayChiTiet.indexOf(giayChiTiet);
                     }
                 }
-                int check = JOptionPane.showConfirmDialog(this, "Bỏ Vào Giỏ ! Mua");
+                boolean check = repobanhang.JOPane.showConfirmDialog(this, "Bỏ Vào Giỏ ! Mua");
 
                 listGiayChiTiet = gct.getAllGiay();
                 listHoaDon = hdrepo.getAllHoaDon();
 
-                if (check == JOptionPane.YES_OPTION) {
+                if (check) {
                     if (!lblMaHoaDon.getText().isEmpty()) {
                         if (indexDanhSachSp >= 0) {
                             Integer soLuongGoc = Integer.valueOf(tblDanhSachSp.getValueAt(indexDanhSachSp, 7).toString());
                             if (soLuongGoc >= 0) {
 
-                                String soLuong = JOptionPane.showInputDialog(null, "Nhập Số Lượng");
-                                try {
-                                    if (Integer.valueOf(soLuong) <= soLuongGoc) {
-
-                                        if (soLuong != null && !soLuong.isEmpty()) {
-                                            int selectedRow = tblListHoaDon.getSelectedRow();
-                                            HoaDon indexHoaDon = listHoaDon.get(selectedRow);//Lý Do
-                                            String idHoaDonz = indexHoaDon.getId();
-                                            GiayChiTiet indexGiay = listGiayChiTiet.get(indexDanhSachSp);
-                                            String donGia = tblDanhSachSp.getValueAt(indexDanhSachSp, 8).toString();
-                                            int soluongGioHang = Integer.parseInt(soLuong);
-                                            Integer soLuongGocGioHang = hdctrepo.selectSoLuongGioHangGoc(idHoaDonz, indexGiay.getiD());
-                                            Integer soLuongGiHangThayDoi = soluongGioHang + soLuongGocGioHang;
-                                            Integer idGiayCtTonTai = hdrepo.selectIdSanPhamTrongGioHang(indexGiay.getiD(), idHoaDonz);
-                                            if (selectedRow >= 0) {
-                                                if (idGiayCtTonTai == 0) {
-                                                    if (hdctrepo.creatGiHang(indexGiay.getiD(), idHoaDonz, new BigDecimal(donGia), soluongGioHang) != null) {
-                                                        updateProductQuantity(indexDanhSachSp, soluongGioHang);
-                                                        showDataSanPham();
-                                                        showDataGoHang(idHoaDonz);
-                                                        JOptionPane.showMessageDialog(this, "Bỏ Thành Công Vào Giỏ");
+                                String soLuong = repobanhang.JOPane.showInputDialog(this, "Nhập Số Lượng");
+                                if (soLuong != null && !soLuong.isEmpty()) {
+                                    try {
+                                        int soLuongNhap = Integer.parseInt(soLuong);
+                                        if (soLuongNhap > 0) {
+                                            if (soLuongNhap <= soLuongGoc) {
+                                                int selectedRow = tblListHoaDon.getSelectedRow();
+                                                HoaDon indexHoaDon = listHoaDon.get(selectedRow);
+                                                String idHoaDonz = indexHoaDon.getId();
+                                                GiayChiTiet indexGiay = listGiayChiTiet.get(indexDanhSachSp);
+                                                String donGia = tblDanhSachSp.getValueAt(indexDanhSachSp, 8).toString();
+                                                int soluongGioHang = soLuongNhap;
+                                                Integer soLuongGocGioHang = hdctrepo.selectSoLuongGioHangGoc(idHoaDonz, indexGiay.getiD());
+                                                Integer soLuongGiHangThayDoi = soluongGioHang + soLuongGocGioHang;
+                                                Integer idGiayCtTonTai = hdrepo.selectIdSanPhamTrongGioHang(indexGiay.getiD(), idHoaDonz);
+lblError.setText(null);
+                                                if (selectedRow >= 0) {
+                                                    if (idGiayCtTonTai == 0) {
+                                                        if (hdctrepo.creatGiHang(indexGiay.getiD(), idHoaDonz, new BigDecimal(donGia), soluongGioHang) != null) {
+                                                            updateProductQuantity(indexDanhSachSp, soluongGioHang);
+                                                            showDataSanPham();
+                                                            showDataGoHang(idHoaDonz);
+                                                            tinhVaThemTongTien(5);
+                                                            repobanhang.JOPane.showMessageDialog(this, "Đã thêm sản phẩm vào giỏ");
+                                                        }
+                                                    } else {
+                                                        if (hdctrepo.updateSoLuong(soLuongGiHangThayDoi, indexGiay.getiD()) != null) {
+                                                            updateProductQuantity(indexDanhSachSp, soluongGioHang);
+                                                            showDataGoHang(idHoaDonz);
+                                                            showDataSanPham();
+                                                            tinhVaThemTongTien(5);
+                                                            repobanhang.JOPane.showMessageDialog(this, "Đã thêm sản phẩm vào giỏ");
+                                                        }
                                                     }
-                                                } else {
-                                                    if (hdctrepo.updateSoLuong(soLuongGiHangThayDoi, indexGiay.getiD()) != null) {
-                                                        updateProductQuantity(indexDanhSachSp, soluongGioHang);// trừ số lượng ở sản phẩm                                   
-                                                        showDataGoHang(idHoaDonz);
-                                                        showDataSanPham();
-                                                        JOptionPane.showMessageDialog(this, "Thay Đổi Số Lượng ");
-                                                    }
-
                                                 }
-                                                showDataGoHang(idHoaDonz);
+                                            } else {
+                                                lblError.setText("Xin Lỗi ! Chúng Tôi Không Có Đủ Số Lượng ");
                                             }
-
+                                        } else {
+                                            lblError.setText("Số lượng phải lớn hơn 0");
                                         }
-
-                                    } else {
-                                        lblError.setText("Xin Lỗi ! Chúng Tôi Không Có Đủ Số Lượng ");
-
-                                        return;
+                                    } catch (NumberFormatException e) {
+                                        repobanhang.JOPane.showMessageDialog(this, "Số Lượng không Đúng Định Dạng Số");
                                     }
-                                } catch (NumberFormatException e) {
-                                    JOptionPane.showMessageDialog(this, "Số Lượng không Đúng Định Dạng Số");
+                                } else {
+                                    lblError.setText("Vui lòng nhập số lượng");
                                 }
-
                             } else {
-
                                 lblError.setText("HẾT HÀNG");
-                                return;
                             }
-
                         } else {
-                            JOptionPane.showMessageDialog(this, "Chọn một sản phẩm trước khi thêm vào giỏ nha!!!^^");
+                            repobanhang.JOPane.showMessageDialog(this, "Chọn một sản phẩm trước khi thêm vào giỏ nha!!!^^");
                         }
                     } else {
                         lblError.setText("Xin Lỗi ! Bạn Chưa Chọn Hoặc Tạo Hoá Đơn ");
-
-                        return;
                     }
                 }
             }
@@ -305,31 +303,26 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
     }
 
     private void showDataGoHang(String id) {
-        try {
-            listHoaDonChiTiet = hdctrepo.getAllHoaDonChiTietByHoaDonID(id);
-            modelListGioHang.setRowCount(0);
-            if (modelListGioHang.getRowCount() < 0) {
-                lblTongTien.setText("0");
-            } else {
-                for (HoaDonChiTiet h : listHoaDonChiTiet) {
-                    String g = h.getiDhoaDon();
-                    // Kiểm tra xem chi tiết hoá đơn có thuộc vào ID hoá đơn cần tìm hay không
-                    if (g.equals(id)) {
-                        modelListGioHang.addRow(new Object[]{
-                            modelListGioHang.getRowCount() + 1,
-                            h.getGiayChiTiet().getGiay().getMa(),
-                            h.getGiayChiTiet().getGiay().getName(),
-                            h.getSoLuong(),
-                            h.getGia(),
-                            h.tongTien()
-                        });
+        listHoaDonChiTiet = hdctrepo.getAllHoaDonChiTietByHoaDonID(id);
+        modelListGioHang.setRowCount(0);
+        if (modelListGioHang.getRowCount() < 0) {
+            lblTongTien.setText("0");
+        } else {
+            for (HoaDonChiTiet h : listHoaDonChiTiet) {
+                String g = h.getiDhoaDon();
+                // Kiểm tra xem chi tiết hoá đơn có thuộc vào ID hoá đơn cần tìm hay không
+                if (g.equals(id)) {
+                    modelListGioHang.addRow(new Object[]{
+                        modelListGioHang.getRowCount() + 1,
+                        h.getGiayChiTiet().getGiay().getMa(),
+                        h.getGiayChiTiet().getGiay().getName(),
+                        h.getSoLuong(),
+                        h.getGia(),
+                        h.tongTien()
+                    });
 
-                    }
                 }
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(HoaDonForm.class
-                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -1147,70 +1140,69 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
     }// </editor-fold>//GEN-END:initComponents
 
     private void tblDanhSachSpMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDanhSachSpMouseClicked
-        int check = JOptionPane.showConfirmDialog(this, "Bỏ Vào Giỏ ! Mua");
+        boolean check = repobanhang.JOPane.showConfirmDialog(this, "Bỏ Vào Giỏ ! Mua");
         int indexDanhSachSp = tblDanhSachSp.getSelectedRow();
         listGiayChiTiet = gct.getAllGiay();
         listHoaDon = hdrepo.getAllHoaDon();
 
-        if (check == JOptionPane.YES_OPTION) {
+        if (check) {
             if (!lblMaHoaDon.getText().isEmpty()) {
                 if (indexDanhSachSp >= 0) {
                     Integer soLuongGoc = Integer.valueOf(tblDanhSachSp.getValueAt(indexDanhSachSp, 7).toString());
                     if (soLuongGoc >= 0) {
 
-                        String soLuong = JOptionPane.showInputDialog(null, "Nhập Số Lượng");
-                        if (Integer.parseInt(soLuong) > 0) {
+                        String soLuong = repobanhang.JOPane.showInputDialog(this, "Nhập Số Lượng");
+                        if (soLuong != null && !soLuong.isEmpty()) {
                             try {
-                                if (Integer.valueOf(soLuong) <= soLuongGoc) {
-
-                                    if (soLuong != null && !soLuong.isEmpty()) {
+                                int soLuongNhap = Integer.parseInt(soLuong);
+                                if (soLuongNhap > 0) {
+                                    if (soLuongNhap <= soLuongGoc) {
                                         int selectedRow = tblListHoaDon.getSelectedRow();
-                                        HoaDon indexHoaDon = listHoaDon.get(selectedRow);//Lý Do
+                                        HoaDon indexHoaDon = listHoaDon.get(selectedRow);
                                         String idHoaDonz = indexHoaDon.getId();
                                         GiayChiTiet indexGiay = listGiayChiTiet.get(indexDanhSachSp);
                                         String donGia = tblDanhSachSp.getValueAt(indexDanhSachSp, 8).toString();
-                                        int soluongGioHang = Integer.parseInt(soLuong);
+                                        int soluongGioHang = soLuongNhap;
                                         Integer soLuongGocGioHang = hdctrepo.selectSoLuongGioHangGoc(idHoaDonz, indexGiay.getiD());
                                         Integer soLuongGiHangThayDoi = soluongGioHang + soLuongGocGioHang;
                                         Integer idGiayCtTonTai = hdrepo.selectIdSanPhamTrongGioHang(indexGiay.getiD(), idHoaDonz);
-
+lblError.setText(null);
                                         if (selectedRow >= 0) {
                                             if (idGiayCtTonTai == 0) {
                                                 if (hdctrepo.creatGiHang(indexGiay.getiD(), idHoaDonz, new BigDecimal(donGia), soluongGioHang) != null) {
                                                     updateProductQuantity(indexDanhSachSp, soluongGioHang);
                                                     showDataSanPham();
                                                     showDataGoHang(idHoaDonz);
-//                                                    JOptionPane.showMessageDialog(this, "Đã thêm sản phẩm vào giỏ");
+                                                    tinhVaThemTongTien(5);
+                                                    repobanhang.JOPane.showMessageDialog(this, "Đã thêm sản phẩm vào giỏ");
                                                 }
                                             } else {
                                                 if (hdctrepo.updateSoLuong(soLuongGiHangThayDoi, indexGiay.getiD()) != null) {
-                                                    updateProductQuantity(indexDanhSachSp, soluongGioHang);// trừ số lượng ở sản phẩm  
+                                                    updateProductQuantity(indexDanhSachSp, soluongGioHang);
                                                     showDataGoHang(idHoaDonz);
                                                     showDataSanPham();
-//                                                    JOptionPane.showMessageDialog(this, "Đã thêm sản phẩm vào giỏ");
+                                                    tinhVaThemTongTien(5);
+                                                    repobanhang.JOPane.showMessageDialog(this, "Đã thêm sản phẩm vào giỏ");
                                                 }
-
                                             }
-                                            showDataGoHang(idHoaDonz);
-                                            tinhVaThemTongTien(5);
-                                            JOptionPane.showMessageDialog(this, "Đã thêm sản phẩm vào giỏ");
                                         }
+                                    } else {
+                                        lblError.setText("Xin Lỗi ! Chúng Tôi Không Có Đủ Số Lượng ");
                                     }
                                 } else {
-                                    lblError.setText("Xin Lỗi ! Chúng Tôi Không Có Đủ Số Lượng ");
+                                    lblError.setText("Số lượng phải lớn hơn 0");
                                 }
                             } catch (NumberFormatException e) {
-                                JOptionPane.showMessageDialog(this, "Số Lượng không Đúng Định Dạng Số");
+                                repobanhang.JOPane.showMessageDialog(this, "Số Lượng không Đúng Định Dạng Số");
                             }
                         } else {
-                            lblError.setText("Số lượng không âm");
+                            lblError.setText("Vui lòng nhập số lượng");
                         }
                     } else {
                         lblError.setText("HẾT HÀNG");
                     }
-
                 } else {
-                    JOptionPane.showMessageDialog(this, "Chọn một sản phẩm trước khi thêm vào giỏ nha!!!^^");
+                    repobanhang.JOPane.showMessageDialog(this, "Chọn một sản phẩm trước khi thêm vào giỏ nha!!!^^");
                 }
             } else {
                 lblError.setText("Xin Lỗi ! Bạn Chưa Chọn Hoặc Tạo Hoá Đơn ");
@@ -1285,37 +1277,44 @@ public final class HoaDonForm extends javax.swing.JFrame implements Runnable, Th
 
     private void btnThanhToanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThanhToanActionPerformed
         if (!lblMaHoaDon.getText().trim().isEmpty()) {
+            if (!txtMaKhach.getText().trim().isEmpty()) {
+                if (!txtTienKhachDua.getText().trim().isEmpty()) {
+                    boolean check = JOPane.showConfirmDialog(this, "Thanh Toán ?");
+                    if (check) {
+                        BigDecimal tienKH = new BigDecimal(txtTienKhachDua.getText().trim());
+                        System.out.println("Tiền khách đưa:" + tienKH);
+                        BigDecimal tienThua = new BigDecimal(lblTienThua.getText().trim());
+                        String trangThai = "Đã thanh toán";
+                        String maHD = tblListHoaDon.getValueAt(tblListHoaDon.getSelectedRow(), 1).toString();
+                        BigDecimal tongT = new BigDecimal(lblTongTien.getText().trim());
+//                        String maNV = lblNhanVien.getText().trim();
+                        listKhachHang = khrp.getKhachHang();
 
-            int check = JOptionPane.showConfirmDialog(this, "Thanh Toán ?");
-            if (check == JOptionPane.YES_OPTION) {
-                BigDecimal tienKH = new BigDecimal(txtTienKhachDua.getText().trim());
-                System.out.println("Tiền khách đưa:" + tienKH);
-                BigDecimal tienThua = new BigDecimal(lblTienThua.getText().trim());
-                String trangThai = "Đã thanh toán";
-                String maHD = tblListHoaDon.getValueAt(tblListHoaDon.getSelectedRow(), 1).toString();
-                BigDecimal tongT = new BigDecimal(lblTongTien.getText().trim());
-                String maNV = lblNhanVien.getText().trim();
-                listKhachHang = khrp.getKhachHang();
-                for (KhachHang k : listKhachHang) {
-                    if (k.getMa().equalsIgnoreCase(txtMaKhach.getText().trim())) {
-                        String idKH = k.getId();
-                        BigDecimal diemTTXong = (new BigDecimal(lblKiemTraDiem.getText().trim()).add(new BigDecimal(10000)));
-                        tdrp.tichDiem(diemTTXong, k.getId());
-                        int ok = hdrepo.updateHDByMa(trangThai, tienKH, tienThua, cboHinhThucTT.getSelectedItem().toString(), idKH, tongT,maNV, maHD);
-                        if (ok == 0) {
-                            showDaTAHoaDon();
-                            resetThanhToan();
-                            JOptionPane.showMessageDialog(this, "Thanh toán thành công !");
-                        } else {
-                            JOptionPane.showMessageDialog(this, "Thanh toán thất bại !");
+                        for (KhachHang k : listKhachHang) {
+                            if (k.getMa().equalsIgnoreCase(txtMaKhach.getText().trim())) {
+                                String idKH = k.getId();
+                                BigDecimal diemTTXong = (new BigDecimal(lblKiemTraDiem.getText().trim()).add(new BigDecimal(10000)));
+                                int ok = hdrepo.updateHDByMa(trangThai, tienKH, tienThua, cboHinhThucTT.getSelectedItem().toString(), idKH, tongT, maHD);
+                                if (ok == 0) {
+                                    showDaTAHoaDon();
+                                    resetThanhToan();
+                                    JOPane.showMessageDialog(this, "Thanh toán thành công !");
+                                    tdrp.tichDiem(diemTTXong, k.getId());
+                                } else {
+                                    JOPane.showMessageDialog(this, "Thanh toán thất bại !");
+                                }
+                            }
                         }
                     }
+                } else {
+                    JOPane.showMessageDialog(this, "Khách chưa đưa tiền thanh toán");
                 }
+            } else {
+                JOPane.showMessageDialog(this, "Chưa có khách hàng");
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Chưa tạo hóa đơn!");
+            JOPane.showMessageDialog(this, "Chưa tạo hóa đơn!");
         }
-
     }//GEN-LAST:event_btnThanhToanActionPerformed
 
     private void tblListHoaDonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblListHoaDonMouseClicked

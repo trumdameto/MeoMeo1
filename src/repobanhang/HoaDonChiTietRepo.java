@@ -175,7 +175,7 @@ public class HoaDonChiTietRepo {
         return null;
     }
 
-    public List<HoaDonChiTiet> getAllHoaDonChiTietByHoaDonID(String id) throws SQLException {
+    public List<HoaDonChiTiet> getAllHoaDonChiTietByHoaDonID(String id){
         String sql = "SELECT HOADONCHITIET.*, GIAYCHITIET.*, GIAY.* ,HANG.*,KIEUDANG.*,DANHMUC.*,MAUSAC.*,KICHCO.*\n"
                 + "                 FROM HOADONCHITIET\n"
                 + "                 INNER JOIN GIAYCHITIET ON HOADONCHITIET.ID_GIAYCT = GIAYCHITIET.ID \n"
@@ -208,7 +208,7 @@ public class HoaDonChiTietRepo {
 
             }
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return listHoaDonChiTiet;
